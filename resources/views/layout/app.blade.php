@@ -1,8 +1,8 @@
 <html>
     <head>
-        <meta name="csrf-token" content="{{ csrf_token() }}">
         <link href="{{asset('css/app.css')}}" rel="stylesheet">
         <title>Cadastro de Cidades</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <style>
             body{
                 padding: 20px;
@@ -22,6 +22,11 @@
                     @yield('body')
                 @endif    
             </main>
-        <script src="{{asset('js/app.js')}}" type="text/javascript"></script>
+        </div>
+        <script src="{{ asset('js/app.js')}}" type="text/javascript"></script>
+
+        @hasSection('javascript')
+            @yield('javascript')
+        @endif
     </body>
 </html>

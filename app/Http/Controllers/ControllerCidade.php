@@ -17,15 +17,14 @@ class ControllerCidade extends Controller
      */
     public function index()
     {
-
+        $arrayUfs = Uf::all()->sortBy("descricao_uf");
                
         $arrayCidades = DB::table('cidades')
             ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
             ->select('cidades.id', 'cidades.descricao_cidade', 'cidades.uf_id', 'ufs.descricao_uf')
             ->get();
 
-        /*$arrayCidades = Cidade::all();*/
-        return view('cidades', compact(['arrayCidades']));
+        return view('cidades', compact(['arrayCidades']),  compact(['arrayUfs']));
     }
 
     /**
@@ -117,4 +116,19 @@ class ControllerCidade extends Controller
         }
         return redirect('/cidades');
     }
+
+    /******API******/
+    public function indexAPIJson()
+    {
+        $arrayUfs = Uf::all()->sortBy("descricao_uf");
+               
+        $arrayCidades = DB::table('cidades')
+            ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
+            ->select('cidades.id', 'cidades.descricao_cidade', 'cidades.uf_id', 'ufs.descricao_uf')
+            ->get();
+
+        return json_encode($arrayCidades);
+        }
+
+
 }

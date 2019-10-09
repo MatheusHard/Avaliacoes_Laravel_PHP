@@ -15,17 +15,29 @@ class ControllerCidade extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexView()
     {
-        $arrayUfs = Uf::all()->sortBy("descricao_uf");
                
         $arrayCidades = DB::table('cidades')
             ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
             ->select('cidades.id', 'cidades.descricao_cidade', 'cidades.uf_id', 'ufs.descricao_uf')
             ->get();
 
-        return view('cidades', compact(['arrayCidades']),  compact(['arrayUfs']));
+        return view('cidades', compact(['arrayCidades']));
     }
+
+    public function index()
+    {
+               
+        $arrayCidades = DB::table('cidades')
+            ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
+            ->select('cidades.id', 'cidades.descricao_cidade', 'cidades.uf_id', 'ufs.descricao_uf')
+            ->get();
+
+        return json_encode($arrayCidades);
+    
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -51,7 +63,7 @@ class ControllerCidade extends Controller
       $cidade->descricao_cidade = $request->input('descricao_cidade');
       $cidade->uf_id = $request->input('uf_id');
       $cidade->save();
-      return redirect('/cidades');
+      return json_encode($cidade);
       
     }
 
@@ -63,7 +75,12 @@ class ControllerCidade extends Controller
      */
     public function show($id)
     {
-        //
+        $cidade = Cidade::find($id);
+        if(isset($cidade)){
+           return json_encode($cidade);
+          }
+          return response('Cidade não encontrada!!!', 404);
+
     }
 
     /**
@@ -98,8 +115,10 @@ class ControllerCidade extends Controller
           $cidade->descricao_cidade = $request->descricao_cidade;
           $cidade->uf_id = $request->uf_id;
           $cidade->save();
+          return json_encode($cidade);
         }
-        return redirect('/cidades');
+
+        return response('Cidade não encontrada!!!', 404);
     }
 
     /**
@@ -113,12 +132,14 @@ class ControllerCidade extends Controller
         $cidade = Cidade::find($id);
         if(isset($cidade)){
             $cidade->delete();
+            return response('OK', 200);
         }
-        return redirect('/cidades');
+        return response('Cidade não encontrada!!!', 404);
     }
 
     /******API******/
-    public function indexAPIJson()
+
+    public function indexAPIJsonCidades()
     {
         $arrayUfs = Uf::all()->sortBy("descricao_uf");
                
@@ -129,6 +150,8 @@ class ControllerCidade extends Controller
 
         return json_encode($arrayCidades);
         }
+
+       
 
 
 }

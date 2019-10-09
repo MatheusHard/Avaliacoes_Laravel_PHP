@@ -16,5 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/cidades', 'ControllerCidade@indexAPIJson');
+//Route::get('/cidades', 'ControllerCidade@indexAPIJsonCidades');
+//Route::get('/ufs', 'ControllerUf@indexAPIJsonUfs'); 
+
+Route::resource('/cidades', 'ControllerCidade');
+Route::resource('/ufs', 'ControllerUf');
 

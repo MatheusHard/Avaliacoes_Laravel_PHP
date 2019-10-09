@@ -13,9 +13,18 @@ class ControllerUf extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    
+    public function indexView()
     {
+       
     }
+    
+    public function index()
+      {
+        $arrayUfs = Uf::all()->sortBy("descricao_uf");
+               
+        return json_encode($arrayUfs);
+        }
 
     /**
      * Show the form for creating a new resource.
@@ -82,4 +91,6 @@ class ControllerUf extends Controller
     {
         //
     }
+
+   
 }

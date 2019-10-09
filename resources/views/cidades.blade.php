@@ -6,7 +6,7 @@
     <div class="card-body">
         <h5 class="card-title"> Cadastro de Cidades</h5>
        
-        <table class="table table-ordered table-hover">
+        <table class="table table-ordered table-hover" id="tabelaCidades">
                 
             <thead>
               <tr>
@@ -17,18 +17,7 @@
               </tr>
             </thead>
             <tbody>
-              @foreach ($arrayCidades as $c)
-              <tr>
-               <th scope="row">{{$c->id}}</th>
-                <td>{{$c->descricao_cidade}}</td>
-                <td>{{$c->descricao_uf}}</td>
-                
-                <td>
-                 <a href="/cidades/editar/{{$c->id}}" class="btn btn-sm btn-primary">Editar</a>
-                <a href="/cidades/apagar/{{$c->id}}" class="btn btn-sm btn-danger">Deletar</a>
-               </td>
-             </tr>
-                  @endforeach  
+            
              </tbody>
           </table>
     </div>
@@ -58,10 +47,8 @@
     <div class="form-group">
       <label for="uf_id" class="control-label">Categoria</label>
         <div class="input-group">
-           <select id="inputState" class="form-control" name="uf_id" id="uf_id">
-        @foreach ($arrayUfs as $uf)   
-            <option value="{{$uf->id}}">{{$uf->descricao_uf}}</option>
-        @endforeach
+           <select class="form-control" name="uf_id" id="uf_id">
+       
             </select>
           </div>
       </div>
@@ -82,12 +69,157 @@
 
 @section('javascript')
     <script type="text/javascript">
-    function novaCidade(){
+   
+$.ajaxSetup({
+  headers:{
+  'X-CSRF-TOKEN':"{{csrf_token()}}"
+  }
+});
+
+   function novaCidade(){
       $('#id').val('');
       $('#descricaoCidade').val('');
       $('#uf_id').val('');
       $('#dlgCidades').modal('show');
     }
+
+
+
+    function montarLinha(c) {
+
+      var  linha = "<tr>"+
+        "<td>"+c.id+"</td>"+
+        "<td>"+c.descricao_cidade+"</td>"+
+        //Funciona correto: 
+        //"<td>"+c.uf_id+"</td>"+
+        "<td>"+c.descricao_uf+"</td>"+
+        "<td>"+
+          '<button class="btn btn-xs btn-primary botoes" onclick="editar('+c.id+')">Editar</button>'+
+          '<button class="btn btn-xs btn-danger botoes" onclick="remover('+c.id+')">Apagar</button>'+
+        "</td>"+
+        "</tr>";
+
+        return linha;
+    }
+      
+      /**********EDITAR CIDADE*********/
+     
+       function editar(id){
+        
+        $.getJSON('/api/cidades/'+id , function(data){
+          console.log(data);
+
+          $('#id').val(data.id);
+          $('#descricao_cidade').val(data.descricao_cidade);
+          $('#uf_id').val(data.uf_id);
+          $('#dlgCidades').modal('show');
+        });
+       }
+
+       /*******REMOVER CIDADE*******/
+
+       function remover(id){
+        $.ajax({
+          type: "DELETE",
+          url: "/api/cidades/"+id,
+          context: this,
+          success: function(){
+
+          console.log("Cidade Deletada")
+          linhas =  $("#tabelaCidades>tbody>tr");
+          c = linhas.filter( function(i, elemento){
+                         return elemento.cells[0].textContent == id;
+                         });
+          if(c){ c.remove();}
+          },
+          error: function(error){
+          
+          console.log(error)
+          }
+        });
+
+       }
+      /******LISTAR CIDADES*********/
+      
+       function listarCidades (){
+
+      $.getJSON('/api/cidades' , function(cidades){
+
+        for( i = 0; i < cidades.length; i++){
+      
+       linha = montarLinha(cidades[i])
+       $('#tabelaCidades>tbody').append(linha);
+      }
+      });
+    }
+
+function listarUfs(){
+
+$.getJSON('/api/ufs' , function(data){
+
+  for( i = 0; i < data.length; i++){
+   opcao = '<option  select  value="'+ data[i].id +'">'+ data[i].descricao_uf+ '</option>';
+   $('#uf_id').append(opcao);
+}
+});
+}
+
+function cadastrarCidade(){
+c = {
+  descricao_cidade: $("#descricao_cidade").val(),
+  uf_id: $("#uf_id").val(),
+
+};
+$.post('/api/cidades' , c, function(data){
+  //Refresh na página:
+  //listarCidades ();
+  city = JSON.parse(data);
+  console.log(city);
+  linha = montarLinha(city);
+  $('#tabelaCidades>tbody').append(linha);
+});
+
+$("#dlgCidades").modal('hide');
+}
+/**********SALVAR CIDADE EDITADA**********/
+
+function salvarCidade() {
+  c = {
+    id: $("#id").val(),
+    descricao_cidade: $("#descricao_cidade").val(),
+    uf_id: $("#uf_id").val()
+
+};
+$.ajax({
+          type: "PUT",
+          url: "/api/cidades/"+ c.id,
+          data: c,
+          context: this,
+          success: function(){
+          console.log("Cidade Salva")
+          },
+          error: function(error){
+          console.log(error)
+          }
+        });
+}
+
+$("#formCidades").submit( function (event) {
+  event.preventDefault();
+  
+  if($("#id").val() != ''){
+    salvarCidade();
+  }else{
+    cadastrarCidade();
+  }
+  $("#dlgCidades").modal('hide');
+});
+
+
+    $(function () {
+      listarUfs();
+      listarCidades();
+      })
     </script>
 @endsection
 

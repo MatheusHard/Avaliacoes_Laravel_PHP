@@ -16,7 +16,7 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/cidades', 'ControllerCidade@index');
+Route::get('/cidades', 'ControllerCidade@indexView');
 Route::get('/cidades/novo', 'ControllerCidade@create');
 Route::post('/cidades', 'ControllerCidade@store');
 Route::get('cidades/apagar/{id}', 'ControllerCidade@destroy');   
@@ -28,7 +28,7 @@ Route::post('/cidades/{id}', 'ControllerCidade@update');
 //Route::get('/cidades/excel', 'ControllerCidade@export');
 
 
-Route::get('avaliacoes', 'ControllerAvaliacao@index');
+Route::get('avaliacoes', 'ControllerAvaliacao@indexView');
 Route::get('/avaliacoes/novo', 'ControllerAvaliacao@create');
 
 //Relatorios Excel:

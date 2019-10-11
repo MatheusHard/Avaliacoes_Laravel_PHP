@@ -38,7 +38,8 @@
     <div class="form-group">
         <label for="descricao_cidade" class="control-label">Cidade</label>
         <div class="input-group">
-            <input type="text" class="form-control" id="descricao_cidade" placeholder="Nome da Cidade">
+            <input type="text" class="form-control" id="descricao_cidade" placeholder="Nome da Cidade" 
+             onkeyup="this.value = this.value.toUpperCase();">
         </div>
     </div>
 
@@ -163,6 +164,7 @@ $.getJSON('/api/ufs' , function(data){
 }
 });
 }
+/*******CADASTRAR CIDADE**********/
 
 function cadastrarCidade(){
 c = {
@@ -195,16 +197,32 @@ $.ajax({
           url: "/api/cidades/"+ c.id,
           data: c,
           context: this,
-          success: function(){
-          console.log("Cidade Salva")
+          success: function(data){
+
+            c = JSON.parse(data);
+            console.log('TESTES',c);
+
+            linhas = $('#tabelaCidades>tbody>tr');
+            e = linhas.filter(function(i, e){
+              return (e.cells[0].textContent == c.id);
+            });
+            if(e){
+             
+              e[0].cells[0].textContent = c.id;
+              e[0].cells[1].textContent = c.descricao_cidade;
+              e[0].cells[2].textContent = c.descricao_uf
+              }
           },
+
           error: function(error){
-          console.log(error)
+          console.log(error);
           }
         });
+       
+
 }
 
-$("#formCidades").submit( function (event) {
+$("#formCidades").submit(function (event) {
   event.preventDefault();
   
   if($("#id").val() != ''){

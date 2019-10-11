@@ -110,7 +110,7 @@ class ControllerCidade extends Controller
     public function update(Request $request, $id)
     {
       $cidade = Cidade::find($id);
-
+      
       if(isset($cidade)){
           $cidade->descricao_cidade = $request->descricao_cidade;
           $cidade->uf_id = $request->uf_id;

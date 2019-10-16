@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Avaliacoes extends Migration
+class CreateAvaliacoesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class Avaliacoes extends Migration
     public function up()
     {
         Schema::create('avaliacoes', function (Blueprint $table) {
-            
+          
             $table->increments('id');
             $table->tinyInteger('radioSim_1');
             $table->tinyInteger('radioNao_1');
@@ -72,7 +72,6 @@ class Avaliacoes extends Migration
             $table->timestamps();
         });
     }
-  
 
     /**
      * Reverse the migrations.

@@ -15,17 +15,7 @@ class ControllerCidade extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function indexView()
-    {
-               
-        $arrayCidades = DB::table('cidades')
-            ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
-            ->select('cidades.id', 'cidades.descricao_cidade', 'cidades.uf_id', 'ufs.descricao_uf')
-            ->get();
-
-        return view('cidades', compact(['arrayCidades']));
-    }
-
+   
     public function index()
     {
                
@@ -36,6 +26,17 @@ class ControllerCidade extends Controller
 
         return json_encode($arrayCidades);
     
+    }
+    
+    public function indexView()
+    {
+               
+        $arrayCidades = DB::table('cidades')
+            ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
+            ->select('cidades.id', 'cidades.descricao_cidade', 'cidades.uf_id', 'ufs.descricao_uf')
+            ->get();
+
+        return view('cidades', compact(['arrayCidades']));
     }
 
 

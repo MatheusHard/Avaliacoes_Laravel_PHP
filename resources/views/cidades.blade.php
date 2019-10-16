@@ -210,7 +210,7 @@ $.ajax({
              
               e[0].cells[0].textContent = c.id;
               e[0].cells[1].textContent = c.descricao_cidade;
-              e[0].cells[2].textContent = c.descricao_uf
+              e[0].cells[2].textContent = c.uf_id
               }
           },
 
@@ -235,6 +235,7 @@ $("#formCidades").submit(function (event) {
 
 
     $(function () {
+
       listarUfs();
       listarCidades();
       })

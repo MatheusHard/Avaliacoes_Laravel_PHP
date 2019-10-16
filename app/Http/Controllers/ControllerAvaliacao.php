@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Cidade;
-use App\Uf;
+
 use App\Avaliacao;
 
 
@@ -18,12 +17,17 @@ class ControllerAvaliacao extends Controller
      */
     public function index()
     {
-        return view('avaliacoes');
+                 
+        $arrayAvaliacoes = DB::table('avaliacoes')->get();
+        return json_encode($arrayAvaliacoes);
+
     }
 
     public function indexView()
-    {                    
-        return view('avaliacoes');
+    {               
+        $arrayAvaliacoes = DB::table('avaliacoes')->get();     
+        return view('avaliacoes' , compact(['arrayAvaliacoes']));
+        
     }
 
     /**

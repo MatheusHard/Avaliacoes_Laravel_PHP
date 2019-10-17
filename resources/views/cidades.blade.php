@@ -4,7 +4,7 @@
 @section('body')
 <div class="card border">
     <div class="card-body">
-        <h5 class="card-title"> Cadastro de Cidades</h5>
+        <h5 class="card-title">Cadastro de Cidades</h5>
        
         <table class="table table-ordered table-hover" id="tabelaCidades">
                 

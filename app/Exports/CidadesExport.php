@@ -22,7 +22,6 @@ class CidadesExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
     */
    public function collection()
     {
-
         $cidades =  DB::table('cidades')
         ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
         ->select('cidades.id', 'cidades.descricao_cidade', 'cidades.uf_id', 'ufs.descricao_uf')

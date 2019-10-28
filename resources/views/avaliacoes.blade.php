@@ -45,10 +45,12 @@
               <input class="form-check-input" type="checkbox"  value="radioNao_1" id="radioNao_1" disabled>
               <label class="form-check-label">Não me proporcionou conhecimento do que já possuia</label><br>
           </div>
-
+          <br>
+          <h1>Conteudo Prático</h1><br>
+          <h3>Clareza/facilidade de trabalho:</h3>  
           <div class="form-check">
               <input class="form-check-input" type="checkbox"  value="radioSim_1" id="radioMuito_2" disabled>
-              <label class="form-check-label" id="muito()"></label><br>
+              <label class="form-check-label">Muito Bom</label><br>
               <input class="form-check-input" type="checkbox"  value="radioNao_1" id="radiobom_2" disabled>
               <label class="form-check-label">Bom</label><br>
               <input class="form-check-input" type="checkbox"  value="radioSim_1" id="radioRegular_2" disabled>
@@ -56,12 +58,105 @@
               <input class="form-check-input" type="checkbox"  value="radioNao_1" id="radioRuim_2" disabled>
               <label class="form-check-label">Ruim</label><br>
           </div>
+
+          <h3>Aplicação do processo de trabalho:</h3>  
+          <div class="form-check">
+              <input class="form-check-input" type="checkbox"  value="radioSeguro_3" id="radioSeguro_3" disabled>
+              <label class="form-check-label">Estou seguro(a) para a utilização em campo</label><br>
+              <input class="form-check-input" type="checkbox"  value="radioPoucoSeguro_3" id="radioPoucoSeguro_3" disabled>
+              <label class="form-check-label">Estou pouco seguro(a) para a utilização em campo</label><br>
+              <input class="form-check-input" type="checkbox"  value="radioInseguro_3" id="radioInseguro_3" disabled>
+              <label class="form-check-label">Estou inseguro(a) para a utilização em campo</label><br>
+      </div>
+      
+      <h3>Carga Horária:</h3>  
+          <div class="form-check">
+              <input class="form-check-input" type="checkbox"  value="radioExcessiva_4" id="radioExcessiva_4" disabled>
+              <label class="form-check-label">Excessiva</label><br>
+              <input class="form-check-input" type="checkbox"  value="radioRazoavel_4" id="radioRazoavel_4" disabled>
+              <label class="form-check-label">Razoável</label><br>
+              <input class="form-check-input" type="checkbox"  value="radioInsuficiente_4" id="radioInsuficiente_4" disabled>
+              <label class="form-check-label">Insuficiente</label><br>
+         
+      </div>
+      <h1>Instrutor</h1><br>
+      <h3>Conhecimento do conteúdo:</h3>  
+      <div class="form-check">
+          <input class="form-check-input" type="checkbox"  value="radioMuito_5" id="radioMuito_5" disabled>
+          <label class="form-check-label">Muito Bom</label><br>
+          <input class="form-check-input" type="checkbox"  value="radiobom_5" id="radiobom_5" disabled>
+          <label class="form-check-label">Bom</label><br>
+          <input class="form-check-input" type="checkbox"  value="radioRegular_5" id="radioRegular_5" disabled>
+          <label class="form-check-label">Regular</label><br>
+          <input class="form-check-input" type="checkbox"  value="radioRuim_5" id="radioRuim_5" disabled>
+          <label class="form-check-label">Ruim</label><br>
+      </div>
+      <h3>Clareza na exposição:</h3>  
+      <div class="form-check">
+          <input class="form-check-input" type="checkbox"  value="radioMuito_6" id="radioMuito_6" disabled>
+          <label class="form-check-label">Muito Bom</label><br>
+          <input class="form-check-input" type="checkbox"  value="radiobom_6" id="radiobom_6" disabled>
+          <label class="form-check-label">Bom</label><br>
+          <input class="form-check-input" type="checkbox"  value="radioRegular_6" id="radioRegular_6" disabled>
+          <label class="form-check-label">Regular</label><br>
+          <input class="form-check-input" type="checkbox"  value="radioRuim_6" id="radioRuim_6" disabled>
+          <label class="form-check-label">Ruim</label><br>
+      </div>
+      <h3>Disponibilidade para exclarecer dúvidas:</h3>  
+      <div class="form-check">
+          <input class="form-check-input" type="checkbox"  value="radioMuito_7" id="radioMuito_7" disabled>
+          <label class="form-check-label">Muito Bom</label><br>
+          <input class="form-check-input" type="checkbox"  value="radiobom_7" id="radiobom_7" disabled>
+          <label class="form-check-label">Bom</label><br>
+          <input class="form-check-input" type="checkbox"  value="radioRegular_7" id="radioRegular_7" disabled>
+          <label class="form-check-label">Regular</label><br>
+          <input class="form-check-input" type="checkbox"  value="radioRuim_7" id="radioRuim_7" disabled>
+          <label class="form-check-label">Ruim</label><br>
       </div>
 
-     
-      
-      
 
+      <h1>Equipe de apoio</h1><br>
+
+      <h3>Conhecimento do conteúdo:</h3>  
+      <div class="form-check">
+          <input class="form-check-input" type="checkbox"  value="radioMuito_8" id="radioMuito_8" disabled>
+          <label class="form-check-label">Muito Bom</label><br>
+          <input class="form-check-input" type="checkbox"  value="radiobom_8" id="radiobom_8" disabled>
+          <label class="form-check-label">Bom</label><br>
+          <input class="form-check-input" type="checkbox"  value="radioRegular_8" id="radioRegular_8" disabled>
+          <label class="form-check-label">Regular</label><br>
+          <input class="form-check-input" type="checkbox"  value="radioRuim_8" id="radioRuim_8" disabled>
+          <label class="form-check-label">Ruim</label><br>
+      </div>
+      <h3>Clareza na exposição:</h3>  
+      <div class="form-check">
+          <input class="form-check-input" type="checkbox"  value="radioMuito_9" id="radioMuito_9" disabled>
+          <label class="form-check-label">Muito Bom</label><br>
+          <input class="form-check-input" type="checkbox"  value="radiobom_9" id="radiobom_9" disabled>
+          <label class="form-check-label">Bom</label><br>
+          <input class="form-check-input" type="checkbox"  value="radioRegular_9" id="radioRegular_9" disabled>
+          <label class="form-check-label">Regular</label><br>
+          <input class="form-check-input" type="checkbox"  value="radioRuim_9" id="radioRuim_9" disabled>
+          <label class="form-check-label">Ruim</label><br>
+      </div>
+      <h3>Disponibilidade para exclarecer dúvidas:</h3>  
+      <div class="form-check">
+          <input class="form-check-input" type="checkbox"  value="radioMuito_10" id="radioMuito_10" disabled>
+          <label class="form-check-label">Muito Bom</label><br>
+          <input class="form-check-input" type="checkbox"  value="radiobom_10" id="radiobom_10" disabled>
+          <label class="form-check-label">Bom</label><br>
+          <input class="form-check-input" type="checkbox"  value="radioRegular_10" id="radioRegular_10" disabled>
+          <label class="form-check-label">Regular</label><br>
+          <input class="form-check-input" type="checkbox"  value="radioRuim_10" id="radioRuim_10" disabled>
+          <label class="form-check-label">Ruim</label><br>
+      </div>
+      <h3>Sugestões:</h3>  
+      <div class="form-check">
+          <label class="form-check-label" id="sugestoes_11">Muito Bom</label><br>
+      </div>
+      </div>
+   </div>
+   
 
 @endsection
 
@@ -149,6 +244,9 @@ $.ajaxSetup({
          if(data[0].nome_agente == 1){$("#nome_agente").attr('checked', true);}
          if(data[0].tipo_agente == 1){$("#tipo_agente").attr('checked', true);}
 
+         if(data[0].descricao != "")$('#sugestoes_11').text(data[0].descricao);
+
+
         $('#dlgAvaliacoes').modal('show');
         });
        }
@@ -179,7 +277,7 @@ function checkedFalse(){
           $("#radioRegular_2").attr('checked', false);
           $("#radioRuim_2").attr('checked', false);
        
-         /* $("#radioSeguro_3").attr('checked', false);
+          $("#radioSeguro_3").attr('checked', false);
           $("#radioPoucoSeguro_3").attr('checked', false);
           $("#radioInseguro_3").attr('checked', false);
 
@@ -198,7 +296,7 @@ function checkedFalse(){
           $("#radioRuim_6").attr('checked', false);
 
           $("#radioMuito_7").attr('checked', false);
-          $("#radiobom_7").attr('checked', false);}
+          $("#radiobom_7").attr('checked', false);
           $("#radioRegular_7").attr('checked', false);
           $("#radioRuim_7").attr('checked', false);
       
@@ -218,9 +316,7 @@ function checkedFalse(){
           $("#radioRegular_10").attr('checked', false);
           $("#radioRuim_10").attr('checked', false);
         
-          $("#descricao").attr('checked', false);
-          $("#nome_agente").attr('checked', false);
-          $("#tipo_agente").attr('checked', false);*/
+         
 
         }
 

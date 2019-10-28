@@ -30,7 +30,7 @@ class ControllerAvaliacao extends Controller
         'avaliacoes.radioMuito_8','avaliacoes.radiobom_8','avaliacoes.radioRegular_8','avaliacoes.radioRuim_8',
         'avaliacoes.radioMuito_9','avaliacoes.radiobom_9','avaliacoes.radioRegular_9','avaliacoes.radioRuim_9',
         'avaliacoes.radioMuito_10','avaliacoes.radiobom_10','avaliacoes.radioRegular_10','avaliacoes.radioRuim_10',
-        'avaliacoes.descricao','avaliacoes.cpf_agente','avaliacoes.nome_agente','avaliacoes.tipo_agente','avaliacoes.id_cidade',
+        'avaliacoes.descricao','avaliacoes.descricao','avaliacoes.cpf_agente','avaliacoes.nome_agente','avaliacoes.tipo_agente','avaliacoes.id_cidade',
         'avaliacoes.datahora','avaliacoes.created_at as avaliacoes_created_at','avaliacoes.updated_at as avaliacoes_updated_at',
         'cidades.id as cidade_id', 'cidades.descricao_cidade', 'cidades.created_at as cidades_updated_at', 'cidades.updated_at as cidades_updated_at', 
         'ufs.id as uf_id', 'ufs.descricao_uf', 'ufs.created_at as uf_created_at', 'ufs.updated_at as uf_updated_at')
@@ -87,7 +87,7 @@ class ControllerAvaliacao extends Controller
         'avaliacoes.radioMuito_9','avaliacoes.radiobom_9','avaliacoes.radioRegular_9','avaliacoes.radioRuim_9',
         'avaliacoes.radioMuito_10','avaliacoes.radiobom_10','avaliacoes.radioRegular_10','avaliacoes.radioRuim_10',
         'avaliacoes.descricao','avaliacoes.cpf_agente','avaliacoes.nome_agente','avaliacoes.tipo_agente','avaliacoes.id_cidade',
-        'avaliacoes.datahora','avaliacoes.created_at as avaliacoes_created_at','avaliacoes.updated_at as avaliacoes_updated_at',
+        'avaliacoes.datahora', 'avaliacoes.descricao','avaliacoes.created_at as avaliacoes_created_at','avaliacoes.updated_at as avaliacoes_updated_at',
         'cidades.id as cidade_id', 'cidades.descricao_cidade', 'cidades.created_at as cidades_updated_at', 'cidades.updated_at as cidades_updated_at', 
         'ufs.id as uf_id', 'ufs.descricao_uf', 'ufs.created_at as uf_created_at', 'ufs.updated_at as uf_updated_at')
         ->where('avaliacoes.id', $id)

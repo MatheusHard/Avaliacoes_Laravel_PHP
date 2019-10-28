@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Uf;
 
 
@@ -21,10 +23,28 @@ class ControllerUf extends Controller
     
     public function index()
       {
-        $arrayUfs = Uf::all()->sortBy("descricao_uf");
-               
-        return json_encode($arrayUfs);
-        }
+
+        //$arrayUfs = Uf::all()->sortBy("descricao_uf");
+        $arrayUfs = DB::table('ufs')->select('id','descricao_uf')->get();
+     
+        return json_encode($arrayUfs, JSON_UNESCAPED_SLASHES , JSON_UNESCAPED_UNICODE);    
+       
+        /*$data = (array('ufs' => $arrayUfs));
+        return response()->json($data);    
+    */
+        //return response($arrayUfs, 200)
+          //    ->header('Content-Type', 'application/json');
+       }
+
+
+    public function indexAPIAndroidUfs()
+    {
+
+      $arrayUfs = DB::table('ufs')->select('descricao_uf')->get();
+   
+      echo response()->json($arrayUfs);    
+  }
+
 
     /**
      * Show the form for creating a new resource.

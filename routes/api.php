@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 //Route::get('/cidades', 'ControllerCidade@indexAPIJsonCidades');
-//Route::get('/ufs', 'ControllerUf@indexAPIJsonUfs'); 
+Route::get('/ufs/index_api', 'ControllerUf@indexAPIAndroidUfs'); 
 
 Route::resource('/cidades', 'ControllerCidade');
 Route::resource('/ufs', 'ControllerUf');

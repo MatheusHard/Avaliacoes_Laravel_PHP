@@ -32,9 +32,12 @@ Route::get('avaliacoes', 'ControllerAvaliacao@indexView');
 Route::get('/avaliacoes/novo', 'ControllerAvaliacao@create');
 
 //Relatorios Excel:
-Route::get('/cidades/excel', function () {
+/*Route::get('/cidades/excel', function () {
     return Excel::download(new CidadesExport, 'cidades.xlsx');
-});
+});*/
+
+Route::get('/excel/cidades', 'ControllerExcel@exportCidades');
+
 
 
 

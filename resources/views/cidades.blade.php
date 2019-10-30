@@ -23,7 +23,7 @@
     </div>
     <div class="card-footer">
         <button class="btn btn-sm btn-primary" role="button" onclick="novaCidade()">Nova Cidade</button>
-        <a href="{{asset('/cidades/excel')}}" class="btn btn-sm btn-success" role="button">Gerar Excel</a>
+        <a href="{{asset('/excel/cidades')}}" class="btn btn-sm btn-success" role="button">Gerar Excel</a>
     </div>
 </div>
 <div class="modal" tabindex="-1" role="dialog" id="dlgCidades">

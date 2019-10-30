@@ -27,7 +27,7 @@ class ControllerUf extends Controller
         //$arrayUfs = Uf::all()->sortBy("descricao_uf");
         $arrayUfs = DB::table('ufs')->select('id','descricao_uf')->get();
      
-        return json_encode($arrayUfs, JSON_UNESCAPED_SLASHES , JSON_UNESCAPED_UNICODE);    
+        return response()->json($arrayUfs);    
        
         /*$data = (array('ufs' => $arrayUfs));
         return response()->json($data);    
@@ -40,9 +40,9 @@ class ControllerUf extends Controller
     public function indexAPIAndroidUfs()
     {
 
-      $arrayUfs = DB::table('ufs')->select('descricao_uf')->get();
+      $arrayUfs = DB::table('ufs')->select('id','descricao_uf')->get();
    
-      echo response()->json($arrayUfs);    
+      return response()->json($arrayUfs);    
   }
 
 
@@ -64,7 +64,9 @@ class ControllerUf extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $uf = Uf::create($request->all());
+
+        return response()->json($uf, 201);
     }
 
     /**

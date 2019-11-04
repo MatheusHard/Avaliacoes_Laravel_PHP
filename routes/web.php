@@ -25,16 +25,12 @@ Route::post('/cidades/{id}', 'ControllerCidade@update');
 
 
 
-//Route::get('/cidades/excel', 'ControllerCidade@export');
 
 
 Route::get('avaliacoes', 'ControllerAvaliacao@indexView');
 Route::get('/avaliacoes/novo', 'ControllerAvaliacao@create');
 
-//Relatorios Excel:
-/*Route::get('/cidades/excel', function () {
-    return Excel::download(new CidadesExport, 'cidades.xlsx');
-});*/
+/**************************ROTAS EXCEL**************************/
 
 Route::get('/excel/cidades', 'ControllerExcel@exportCidades');
 

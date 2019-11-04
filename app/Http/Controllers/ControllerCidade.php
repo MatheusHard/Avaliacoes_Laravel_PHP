@@ -60,13 +60,26 @@ class ControllerCidade extends Controller
      */
     public function store(Request $request)
     {
-      $cidade = new Cidade();
-      $cidade->descricao_cidade = $request->input('descricao_cidade');
-      $cidade->uf_id = $request->input('uf_id');
-      $cidade->save();
-      return json_encode($cidade);
+
+        try{
+           /* $cidade = new Cidade();
+            $cidade->descricao_cidade = $request->input('descricao_cidade');
+            $cidade->uf_id = $request->input('uf_id');
+            $cidade->save();*/
+            DB::table('cidades')->insert([
+                ['descricao_cidade' => $request->input('descricao_cidade'),
+                 'uf_id' => $request->input('uf_id')]
+            ]);
+           
       
+            return ['insert' => 'ok'];
+
+        } catch(\Exception $erro) {
+
+            return ['insert' =>  $erro];
+        }
     }
+
 
     /**
      * Display the specified resource.
@@ -138,21 +151,11 @@ class ControllerCidade extends Controller
         return response('Cidade não encontrada!!!', 404);
     }
 
-    /******API******/
+/*****************APIS EXTERNAS*************/
 
-    public function indexAPIJsonCidades()
-    {
-        $arrayUfs = Uf::all()->sortBy("descricao_uf");
-               
-        $arrayCidades = DB::table('cidades')
-            ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
-            ->select('cidades.id', 'cidades.descricao_cidade', 'cidades.uf_id', 'ufs.descricao_uf')
-            ->get();
-
-        return json_encode($arrayCidades);
-        }
-
-       
-
-
+public function indexAPIAndroidCidades()
+{
+  $arrayCidades = DB::table('cidades')->select('id','descricao_cidade', 'uf_id')->get();
+  return response()->json($arrayCidades);    
+ }
 }

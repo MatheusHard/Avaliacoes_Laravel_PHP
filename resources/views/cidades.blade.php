@@ -46,9 +46,9 @@
     
     
     <div class="form-group">
-      <label for="uf_id" class="control-label">Categoria</label>
+      <label for="estados" class="control-label">Estados</label>
         <div class="input-group">
-           <select class="form-control" name="uf_id" id="uf_id">
+           <select class="form-control" id="uf_id">
        
             </select>
           </div>
@@ -166,15 +166,18 @@ $.getJSON('/api/ufs' , function(data){
 }
 /*******CADASTRAR CIDADE**********/
 
+
+
 function cadastrarCidade(){
 c = {
   descricao_cidade: $("#descricao_cidade").val(),
-  uf_id: $("#uf_id").val(),
+  uf_id: $("#uf_id").val()
 
 };
 $.post('/api/cidades' , c, function(data){
   //Refresh na página:
   //listarCidades ();
+  console.log(data);
   city = JSON.parse(data);
   console.log(city);
   linha = montarLinha(city);
@@ -210,7 +213,7 @@ $.ajax({
              
               e[0].cells[0].textContent = c.id;
               e[0].cells[1].textContent = c.descricao_cidade;
-              e[0].cells[2].textContent = c.uf_id
+              e[0].cells[2].textContent = c.descricao_uf
               }
           },
 

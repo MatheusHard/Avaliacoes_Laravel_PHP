@@ -23,7 +23,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/cidades/index_api', 'ControllerCidade@indexAPIAndroidCidades');
 Route::post('/cidades/store_api', 'ControllerCidade@store');
 
-
 //Ufs
 Route::post('/ufs/index_api', 'ControllerUf@indexAPIAndroidUfs');
 
@@ -31,7 +30,7 @@ Route::post('/ufs/index_api', 'ControllerUf@indexAPIAndroidUfs');
 Route::post('/avaliacoes/store_api', 'ControllerAvaliacao@store');
 
 
-/*********************************************/
+/******************APIS BLADE***********************/
 
 Route::resource('/cidades', 'ControllerCidade');
 Route::resource('/ufs', 'ControllerUf');

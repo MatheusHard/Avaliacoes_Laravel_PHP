@@ -62,7 +62,7 @@ class CreateAvaliacoesTable extends Migration
             $table->tinyInteger('radioRegular_10');
             $table->tinyInteger('radioRuim_10');
 
-            $table->string('descricao', 100);
+            $table->string('descricao', 100)->nullable();
             $table->string('cpf_agente', 11)->unique();
             $table->string('nome_agente', 250);
             $table->tinyInteger('tipo_agente');

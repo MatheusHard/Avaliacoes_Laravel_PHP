@@ -61,22 +61,25 @@ class ControllerCidade extends Controller
     public function store(Request $request)
     {
 
+        
+        //Pegar a descricao Uf pra Setar no Blade Cidade:
+       $uf = Uf::find( $request->input('uf_id'));
+       
         try{
-           /* $cidade = new Cidade();
+    
+            $cidade = new Cidade();
             $cidade->descricao_cidade = $request->input('descricao_cidade');
             $cidade->uf_id = $request->input('uf_id');
-            $cidade->save();*/
-            DB::table('cidades')->insert([
-                ['descricao_cidade' => $request->input('descricao_cidade'),
-                 'uf_id' => $request->input('uf_id')]
-            ]);
-           
-      
-            return ['insert' => 'ok'];
+            $cidade->save();
+            //Gambiarra:
+            $cidade->descricao_uf = $uf->descricao_uf;
+            return json_encode($cidade);
+
+
 
         } catch(\Exception $erro) {
 
-            return ['insert' =>  $erro];
+            return json_encode($erro);
         }
     }
 
@@ -123,12 +126,17 @@ class ControllerCidade extends Controller
      */
     public function update(Request $request, $id)
     {
+
+      //Pegar a descricao Uf pra Setar no Blade Cidade:
+      $uf = Uf::find($request->input('uf_id'));
       $cidade = Cidade::find($id);
       
       if(isset($cidade)){
           $cidade->descricao_cidade = $request->descricao_cidade;
           $cidade->uf_id = $request->uf_id;
           $cidade->save();
+          //Gambiarra:
+          $cidade->descricao_uf = $uf->descricao_uf;
           return json_encode($cidade);
         }
 

@@ -1,6 +1,7 @@
 @extends('layout.app', ["current"=>"avaliacoes"])
 @section('body')
     @section('body')
+
 <div class="card border">
     <div class="card-body">
         <h5 class="card-title">Avaliações</h5>
@@ -22,9 +23,22 @@
           </table>
     </div>
     <div class="card-footer">
-        <a href="{{asset('/cidades/excel')}}" class="btn btn-sm btn-success" role="button">Gerar Excel</a>
+      <div class="float-left">
+      <label for="estados" class="control-label float-letf" >Cidade</label>
+       
+      <select class="form-control" id="id_cidade" style="width:250px;">
+             
+        </select>
+        
+      <a class="btn btn-sm btn-success float-right" onclick="gerarExcelAvaliacoes();" role="button">Gerar Excel</a>
     </div>
+  </div>
 </div>
+<div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+
+
+<!--**********TESTES*****************-->
+
 
 <!--*****************DIALOG RESUMO*****************-->
 
@@ -40,77 +54,77 @@
                 <h1>Conteudo Teórico</h1><br>
                 <h3>Aplicação no Processo de trabalho:</h3>  
               <div class="form-check">
-              <input class="form-check-input" type="checkbox"  value="radioSim_1" id="radioSim_1" disabled>
+              <input class="form-check-input" type="radio"  value="radioSim_1" id="radioSim_1" disabled>
               <label class="form-check-label">Proporcionou novos conhecimentos</label><br>
-              <input class="form-check-input" type="checkbox"  value="radioNao_1" id="radioNao_1" disabled>
+              <input class="form-check-input" type="radio"  value="radioNao_1" id="radioNao_1" disabled>
               <label class="form-check-label">Não me proporcionou conhecimento do que já possuia</label><br>
           </div>
           <br>
           <h1>Conteudo Prático</h1><br>
           <h3>Clareza/facilidade de trabalho:</h3>  
           <div class="form-check">
-              <input class="form-check-input" type="checkbox"  value="radioSim_1" id="radioMuito_2" disabled>
+              <input class="form-check-input" type="radio"  value="radioSim_1" id="radioMuito_2" disabled>
               <label class="form-check-label">Muito Bom</label><br>
-              <input class="form-check-input" type="checkbox"  value="radioNao_1" id="radiobom_2" disabled>
+              <input class="form-check-input" type="radio"  value="radioNao_1" id="radiobom_2" disabled>
               <label class="form-check-label">Bom</label><br>
-              <input class="form-check-input" type="checkbox"  value="radioSim_1" id="radioRegular_2" disabled>
+              <input class="form-check-input" type="radio"  value="radioSim_1" id="radioRegular_2" disabled>
               <label class="form-check-label">Regular</label><br>
-              <input class="form-check-input" type="checkbox"  value="radioNao_1" id="radioRuim_2" disabled>
+              <input class="form-check-input" type="radio"  value="radioNao_1" id="radioRuim_2" disabled>
               <label class="form-check-label">Ruim</label><br>
           </div>
 
           <h3>Aplicação do processo de trabalho:</h3>  
           <div class="form-check">
-              <input class="form-check-input" type="checkbox"  value="radioSeguro_3" id="radioSeguro_3" disabled>
+              <input class="form-check-input" type="radio"  value="radioSeguro_3" id="radioSeguro_3" disabled>
               <label class="form-check-label">Estou seguro(a) para a utilização em campo</label><br>
-              <input class="form-check-input" type="checkbox"  value="radioPoucoSeguro_3" id="radioPoucoSeguro_3" disabled>
+              <input class="form-check-input" type="radio"  value="radioPoucoSeguro_3" id="radioPoucoSeguro_3" disabled>
               <label class="form-check-label">Estou pouco seguro(a) para a utilização em campo</label><br>
-              <input class="form-check-input" type="checkbox"  value="radioInseguro_3" id="radioInseguro_3" disabled>
+              <input class="form-check-input" type="radio"  value="radioInseguro_3" id="radioInseguro_3" disabled>
               <label class="form-check-label">Estou inseguro(a) para a utilização em campo</label><br>
       </div>
       
       <h3>Carga Horária:</h3>  
           <div class="form-check">
-              <input class="form-check-input" type="checkbox"  value="radioExcessiva_4" id="radioExcessiva_4" disabled>
+              <input class="form-check-input" type="radio"  value="radioExcessiva_4" id="radioExcessiva_4" disabled>
               <label class="form-check-label">Excessiva</label><br>
-              <input class="form-check-input" type="checkbox"  value="radioRazoavel_4" id="radioRazoavel_4" disabled>
+              <input class="form-check-input" type="radio"  value="radioRazoavel_4" id="radioRazoavel_4" disabled>
               <label class="form-check-label">Razoável</label><br>
-              <input class="form-check-input" type="checkbox"  value="radioInsuficiente_4" id="radioInsuficiente_4" disabled>
+              <input class="form-check-input" type="radio"  value="radioInsuficiente_4" id="radioInsuficiente_4" disabled>
               <label class="form-check-label">Insuficiente</label><br>
          
       </div>
       <h1>Instrutor</h1><br>
       <h3>Conhecimento do conteúdo:</h3>  
       <div class="form-check">
-          <input class="form-check-input" type="checkbox"  value="radioMuito_5" id="radioMuito_5" disabled>
+          <input class="form-check-input" type="radio"  value="radioMuito_5" id="radioMuito_5" disabled>
           <label class="form-check-label">Muito Bom</label><br>
-          <input class="form-check-input" type="checkbox"  value="radiobom_5" id="radiobom_5" disabled>
+          <input class="form-check-input" type="radio"  value="radiobom_5" id="radiobom_5" disabled>
           <label class="form-check-label">Bom</label><br>
-          <input class="form-check-input" type="checkbox"  value="radioRegular_5" id="radioRegular_5" disabled>
+          <input class="form-check-input" type="radio"  value="radioRegular_5" id="radioRegular_5" disabled>
           <label class="form-check-label">Regular</label><br>
-          <input class="form-check-input" type="checkbox"  value="radioRuim_5" id="radioRuim_5" disabled>
+          <input class="form-check-input" type="radio"  value="radioRuim_5" id="radioRuim_5" disabled>
           <label class="form-check-label">Ruim</label><br>
       </div>
       <h3>Clareza na exposição:</h3>  
       <div class="form-check">
-          <input class="form-check-input" type="checkbox"  value="radioMuito_6" id="radioMuito_6" disabled>
+          <input class="form-check-input" type="radio"  value="radioMuito_6" id="radioMuito_6" disabled>
           <label class="form-check-label">Muito Bom</label><br>
-          <input class="form-check-input" type="checkbox"  value="radiobom_6" id="radiobom_6" disabled>
+          <input class="form-check-input" type="radio"  value="radiobom_6" id="radiobom_6" disabled>
           <label class="form-check-label">Bom</label><br>
-          <input class="form-check-input" type="checkbox"  value="radioRegular_6" id="radioRegular_6" disabled>
+          <input class="form-check-input" type="radio"  value="radioRegular_6" id="radioRegular_6" disabled>
           <label class="form-check-label">Regular</label><br>
-          <input class="form-check-input" type="checkbox"  value="radioRuim_6" id="radioRuim_6" disabled>
+          <input class="form-check-input" type="radio"  value="radioRuim_6" id="radioRuim_6" disabled>
           <label class="form-check-label">Ruim</label><br>
       </div>
       <h3>Disponibilidade para exclarecer dúvidas:</h3>  
       <div class="form-check">
-          <input class="form-check-input" type="checkbox"  value="radioMuito_7" id="radioMuito_7" disabled>
+          <input class="form-check-input" type="radio"  value="radioMuito_7" id="radioMuito_7" disabled>
           <label class="form-check-label">Muito Bom</label><br>
-          <input class="form-check-input" type="checkbox"  value="radiobom_7" id="radiobom_7" disabled>
+          <input class="form-check-input" type="radio"  value="radiobom_7" id="radiobom_7" disabled>
           <label class="form-check-label">Bom</label><br>
-          <input class="form-check-input" type="checkbox"  value="radioRegular_7" id="radioRegular_7" disabled>
+          <input class="form-check-input" type="radio"  value="radioRegular_7" id="radioRegular_7" disabled>
           <label class="form-check-label">Regular</label><br>
-          <input class="form-check-input" type="checkbox"  value="radioRuim_7" id="radioRuim_7" disabled>
+          <input class="form-check-input" type="radio"  value="radioRuim_7" id="radioRuim_7" disabled>
           <label class="form-check-label">Ruim</label><br>
       </div>
 
@@ -119,35 +133,35 @@
 
       <h3>Conhecimento do conteúdo:</h3>  
       <div class="form-check">
-          <input class="form-check-input" type="checkbox"  value="radioMuito_8" id="radioMuito_8" disabled>
+          <input class="form-check-input" type="radio"  value="radioMuito_8" id="radioMuito_8" disabled>
           <label class="form-check-label">Muito Bom</label><br>
-          <input class="form-check-input" type="checkbox"  value="radiobom_8" id="radiobom_8" disabled>
+          <input class="form-check-input" type="radio"  value="radiobom_8" id="radiobom_8" disabled>
           <label class="form-check-label">Bom</label><br>
-          <input class="form-check-input" type="checkbox"  value="radioRegular_8" id="radioRegular_8" disabled>
+          <input class="form-check-input" type="radio"  value="radioRegular_8" id="radioRegular_8" disabled>
           <label class="form-check-label">Regular</label><br>
-          <input class="form-check-input" type="checkbox"  value="radioRuim_8" id="radioRuim_8" disabled>
+          <input class="form-check-input" type="radio"  value="radioRuim_8" id="radioRuim_8" disabled>
           <label class="form-check-label">Ruim</label><br>
       </div>
       <h3>Clareza na exposição:</h3>  
       <div class="form-check">
-          <input class="form-check-input" type="checkbox"  value="radioMuito_9" id="radioMuito_9" disabled>
+          <input class="form-check-input" type="radio"  value="radioMuito_9" id="radioMuito_9" disabled>
           <label class="form-check-label">Muito Bom</label><br>
-          <input class="form-check-input" type="checkbox"  value="radiobom_9" id="radiobom_9" disabled>
+          <input class="form-check-input" type="radio"  value="radiobom_9" id="radiobom_9" disabled>
           <label class="form-check-label">Bom</label><br>
-          <input class="form-check-input" type="checkbox"  value="radioRegular_9" id="radioRegular_9" disabled>
+          <input class="form-check-input" type="radio"  value="radioRegular_9" id="radioRegular_9" disabled>
           <label class="form-check-label">Regular</label><br>
-          <input class="form-check-input" type="checkbox"  value="radioRuim_9" id="radioRuim_9" disabled>
+          <input class="form-check-input" type="radio"  value="radioRuim_9" id="radioRuim_9" disabled>
           <label class="form-check-label">Ruim</label><br>
       </div>
       <h3>Disponibilidade para exclarecer dúvidas:</h3>  
       <div class="form-check">
-          <input class="form-check-input" type="checkbox"  value="radioMuito_10" id="radioMuito_10" disabled>
+          <input class="form-check-input" type="radio"  value="radioMuito_10" id="radioMuito_10" disabled>
           <label class="form-check-label">Muito Bom</label><br>
-          <input class="form-check-input" type="checkbox"  value="radiobom_10" id="radiobom_10" disabled>
+          <input class="form-check-input" type="radio"  value="radiobom_10" id="radiobom_10" disabled>
           <label class="form-check-label">Bom</label><br>
-          <input class="form-check-input" type="checkbox"  value="radioRegular_10" id="radioRegular_10" disabled>
+          <input class="form-check-input" type="radio"  value="radioRegular_10" id="radioRegular_10" disabled>
           <label class="form-check-label">Regular</label><br>
-          <input class="form-check-input" type="checkbox"  value="radioRuim_10" id="radioRuim_10" disabled>
+          <input class="form-check-input" type="radio"  value="radioRuim_10" id="radioRuim_10" disabled>
           <label class="form-check-label">Ruim</label><br>
       </div>
       <h3>Sugestões:</h3>  
@@ -155,13 +169,24 @@
           <label class="form-check-label" id="sugestoes_11">Muito Bom</label><br>
       </div>
       </div>
+
+
    </div>
-   
+
+
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 @endsection
 
 @section('javascript')
     <script type="text/javascript">
+
+
+/**********************************PIZZA***************************/
+
+
+  
+/*******************************************************************/
    
 $.ajaxSetup({
   headers:{
@@ -171,16 +196,19 @@ $.ajaxSetup({
 
   
     function montarLinha(a) {
-
+      console.log("MOntar:"+ a.tipo_agente);
       var  linha = "<tr>"+
         "<td>"+a.nome_agente+"</td>"+
         "<td>"+a.cpf_agente+"</td>"+
         "<td>"+a.descricao_cidade+ "/" + a.descricao_uf +"</td>"+
-        "<td>"+tipoAgente(a.tipoAgente)+"</td>"+
+        "<td>"+tipoAgente(a.tipo_agente)+"</td>"+
         "<td>"+
           '<button class="btn btn-xs btn-primary botoes" onclick="exibir('+a.id+')">Resumo</button>'+
+ 
           "</td>"+
         "</tr>";
+
+        
 
         return linha;
     }
@@ -251,20 +279,51 @@ $.ajaxSetup({
         });
        }
 
-      /******LISTAR CIDADES*********/
+      /******LISTAR*********/
       
        function listarAvaliacoes (){
 
       $.getJSON('/api/avaliacoes', function(avaliacoes){
-
+ 
         for( i = 0; i < avaliacoes.length; i++){
-     
-       linha = montarLinha(avaliacoes[i])
+        console.log(avaliacoes);
+        linha = montarLinha(avaliacoes[i])
        $('#tabelaAvalicoes>tbody').append(linha);
       }
       });
     }
 
+    $barra = "/";
+
+    function listarCidades(){
+
+    $.getJSON('/api/cidades' , function(data){
+
+      for( i = 0; i < data.length; i++){
+      opcao = '<option  select  value="'+ data[i].id +'">'+ data[i].descricao_cidade+ $barra + data[i].descricao_uf + '</option>';
+      $('#id_cidade').append(opcao);
+      }
+      });
+      }
+
+      function gerarExcelAvaliacoes(){
+     
+     
+     a = {
+          id_cidade: $("#id_cidade").val(),
+        }
+         //console.log('l'+id_cidade);
+
+         $.ajax({
+          type: "POST",
+          url: "excel/avaliacoes",
+          data: a,
+          context: this,
+        });
+             
+
+
+    }
  /****************UTILS****************/
 
 function checkedFalse(){
@@ -317,12 +376,12 @@ function checkedFalse(){
           $("#radioRuim_10").attr('checked', false);
         
          
-
+        
         }
 
  function tipoAgente(tipo){
     
-    if(tipo == 1){
+    if(tipo === 1){
       return "ACS";
     }else{
       return "ACE";
@@ -345,7 +404,7 @@ function checkedFalse(){
 /*********AUTO LOAD**********/
 
     $(function () {
-     
+      listarCidades();
       listarAvaliacoes();
       })
     </script>

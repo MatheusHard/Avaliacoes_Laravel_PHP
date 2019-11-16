@@ -29,7 +29,6 @@ Route::post('/ufs/index_api', 'ControllerUf@indexAPIAndroidUfs');
 //Avaliações
 Route::post('/avaliacoes/store_api', 'ControllerAvaliacao@store');
 
-
 /******************APIS BLADE***********************/
 
 Route::resource('/cidades', 'ControllerCidade');

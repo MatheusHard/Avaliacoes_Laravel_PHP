@@ -21,7 +21,7 @@ class ControllerAvaliacao extends Controller
       $arrayAvaliacoes = DB::table('avaliacoes')
         ->join('cidades', 'avaliacoes.id_cidade', '=', 'cidades.id')
         ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
-        ->select( 'avaliacoes.id',  'avaliacoes.radioSim_1','avaliacoes.radioNao_1','avaliacoes.radioMuito_2',
+        ->select( 'avaliacoes.id', 'avaliacoes.radioSim_1','avaliacoes.radioNao_1','avaliacoes.radioMuito_2',
         'avaliacoes.radiobom_2','avaliacoes.radioRegular_2','avaliacoes.radioRuim_2','avaliacoes.radioSeguro_3','avaliacoes.radioPoucoSeguro_3',
         'avaliacoes.radioInseguro_3','avaliacoes.radioExcessiva_4','avaliacoes.radioRazoavel_4','avaliacoes.radioInsuficiente_4',
         'avaliacoes.radioMuito_5','avaliacoes.radiobom_5','avaliacoes.radioRegular_5','avaliacoes.radioRuim_5',

@@ -33,6 +33,8 @@ Route::get('/avaliacoes/novo', 'ControllerAvaliacao@create');
 /**************************ROTAS EXCEL**************************/
 
 Route::get('/excel/cidades', 'ControllerExcel@exportCidades');
+Route::post('/excel/avaliacoes', 'ControllerExcel@exportAvaliacoes');
+
 
 
 

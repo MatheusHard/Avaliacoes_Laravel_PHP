@@ -28,6 +28,8 @@ class CidadesExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
         ->get();
         return $cidades;
     }
+    
+    
 
    
     public function headings(): array

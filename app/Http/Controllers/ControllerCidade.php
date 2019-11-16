@@ -22,7 +22,7 @@ class ControllerCidade extends Controller
         $arrayCidades = DB::table('cidades')
             ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
             ->select('cidades.id', 'cidades.descricao_cidade', 'cidades.uf_id', 'ufs.descricao_uf')
-            ->get();
+            ->orderBy('cidades.descricao_cidade', 'asc')->get();
 
         return json_encode($arrayCidades);
     

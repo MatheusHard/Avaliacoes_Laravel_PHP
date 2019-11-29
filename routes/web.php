@@ -29,11 +29,18 @@ Route::post('/cidades/{id}', 'ControllerCidade@update');
 
 Route::get('avaliacoes', 'ControllerAvaliacao@indexView');
 Route::get('/avaliacoes/novo', 'ControllerAvaliacao@create');
+Route::get('avaliacoes/mostrar/{id}', 'ControllerAvaliacao@show');
+
 
 /**************************ROTAS EXCEL**************************/
 
 Route::get('/excel/cidades', 'ControllerExcel@exportCidades');
-Route::post('/excel/avaliacoes', 'ControllerExcel@exportAvaliacoes');
+Route::get('/excel/avaliacoes/{id}', 'ControllerExcel@exportAvaliacoes');
+
+
+
+
+
 
 
 

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Exports\AvaliacoesExport;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +37,11 @@ Route::resource('/cidades', 'ControllerCidade');
 Route::resource('/ufs', 'ControllerUf');
 Route::resource('/avaliacoes', 'ControllerAvaliacao');
 
+//Route::post('/excel/avaliacoes', 'ControllerAvaliacao@exportAvaliacoes');
 
+Route::post('/excel/avaliacoes', function (Request $request) {
+    return Excel::download(new AvaliacoesExport($request->id_cidade), 'avaliacoes.xlsx');
 
+});
 
 

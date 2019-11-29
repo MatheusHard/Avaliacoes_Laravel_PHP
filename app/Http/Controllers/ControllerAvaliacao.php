@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Exports\AvaliacoesExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 use App\Avaliacao;
-
+use App\Cidade;
 
 class ControllerAvaliacao extends Controller
 {
@@ -195,4 +199,8 @@ class ControllerAvaliacao extends Controller
     {
         //
     }
+
+
+    
 }
+

@@ -63,7 +63,7 @@ class ControllerCidade extends Controller
 
         
         //Pegar a descricao Uf pra Setar no Blade Cidade:
-       $uf = Uf::find( $request->input('uf_id'));
+       $uf = Uf::find($request->input('uf_id'));
        
         try{
     

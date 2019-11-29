@@ -66,6 +66,13 @@
 
 </div>
 
+<form method="POST" action="/excel/avaliacoes">
+  @csrf
+  <input type="text" class="form-control" id="id_cidade" placeholder="Nome da Cidade"> 
+  <button type="submit" class="btn btn-primary">Salvar</button>
+
+</form>
+
 @endsection
 
 @section('javascript')
@@ -142,7 +149,7 @@ $.ajaxSetup({
        }
       /******LISTAR CIDADES*********/
       
-       function listarCidades (){
+       function listarCidades(){
 
       $.getJSON('/api/cidades' , function(cidades){
 
@@ -208,7 +215,7 @@ $.ajax({
             linhas = $('#tabelaCidades>tbody>tr');
             e = linhas.filter(function(i, e){
               return (e.cells[0].textContent == c.id);
-            });
+            });   
             if(e){
              
               e[0].cells[0].textContent = c.id;

@@ -24,23 +24,32 @@
     </div>
     <div class="card-footer">
       <div class="float-left">
-      <label for="estados" class="control-label float-letf" >Cidade</label>
-       
-      <select class="form-control" id="id_cidade" style="width:250px;">
-             
-        </select>
-        
-      <a class="btn btn-sm btn-success float-right" onclick="gerarExcelAvaliacoes();" role="button">Gerar Excel</a>
+
+        <form class="form-horizontal" id="formAvaliacoes">
+          
+          <div class="modal-body">
+         
+            <div class="form-group">
+              <label for="estados" class="control-label">Cidades</label>
+                <div class="input-group">
+                   <select class="form-control" id="id_cidade">
+               
+                    </select>
+                  </div>
+              </div>
+
+           
+             <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+          </div>
+        </div>
+        </form>
     </div>
   </div>
 </div>
 <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
 
-
-<!--**********TESTES*****************-->
-
-
-<!--*****************DIALOG RESUMO*****************-->
+<!--************************************DIALOG RESUMO************************************-->
 
 <div class="modal" tabindex="-1" role="dialog" id="dlgAvaliacoes">
     <div class="modal-dialog" role="document">
@@ -174,19 +183,11 @@
    </div>
 
 
-   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 @endsection
 
 @section('javascript')
     <script type="text/javascript">
-
-
-/**********************************PIZZA***************************/
-
-
-  
-/*******************************************************************/
    
 $.ajaxSetup({
   headers:{
@@ -212,7 +213,8 @@ $.ajaxSetup({
 
         return linha;
     }
-/*********EXIBIR AVALIAÇÃO*********/
+
+/************************************EXIBIR AVALIAÇÃO************************************/
 
     function exibir(id){
         
@@ -279,7 +281,7 @@ $.ajaxSetup({
         });
        }
 
-      /******LISTAR*********/
+      /************************************LISTAR************************************/
       
        function listarAvaliacoes (){
 
@@ -295,6 +297,8 @@ $.ajaxSetup({
 
     $barra = "/";
 
+
+
     function listarCidades(){
 
     $.getJSON('/api/cidades' , function(data){
@@ -306,25 +310,7 @@ $.ajaxSetup({
       });
       }
 
-      function gerarExcelAvaliacoes(){
-     
-     
-     a = {
-          id_cidade: $("#id_cidade").val(),
-        }
-         //console.log('l'+id_cidade);
 
-         $.ajax({
-          type: "POST",
-          url: "excel/avaliacoes",
-          data: a,
-          context: this,
-        });
-             
-
-
-    }
- /****************UTILS****************/
 
 function checkedFalse(){
           
@@ -379,6 +365,8 @@ function checkedFalse(){
         
         }
 
+ /************************************UTILS************************************/
+
  function tipoAgente(tipo){
     
     if(tipo === 1){
@@ -388,18 +376,38 @@ function checkedFalse(){
     }
    }
 
-   function muito(){
-     return "Muito Bom";
-   }
-   function bom(){
-     return "Bom";
-   }
-   function regular(){
-     return "Regular";
-   }
-   function ruim(){
-     return "Ruim";
-   }
+   /***********************************GERAR EXCEL************************************/
+
+
+   function gerarExcelAvaliacoes() {
+    
+    a = {
+        id_cidade: $("#id_cidade").val(),
+        };
+    
+       $.ajax({
+          type: "GET",
+          url: "/excel/avaliacoes/"+a.id_cidade,
+          context: this,
+          xhrFields: {
+            responseType: 'blob'
+          },
+          success: function (blob) {
+            console.log(blob.size);
+            var link=document.createElement('a');
+            link.href=window.URL.createObjectURL(blob);
+            link.download="Avaliacoes_" + new Date() + ".xlsx";
+            link.click();
+          },
+        });
+  }
+
+  
+   $("#formAvaliacoes").submit(function (event) {
+   event.preventDefault();
+   gerarExcelAvaliacoes();
+  
+});
 
 /*********AUTO LOAD**********/
 

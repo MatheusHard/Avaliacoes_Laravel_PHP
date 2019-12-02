@@ -107,22 +107,22 @@ class ControllerExcel extends Controller
     
     }
   
+    
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-     
-    public function exportAvaliacoes(Request $request, $id)
+    
+    public function exportPostAvaliacoes(Request $request)
     {
 
-        $arquivo = new AvaliacoesExport($id);
-   
+        $arquivo = new AvaliacoesExport($request->id_cidade);
         return Excel::download($arquivo, 'avaliacoes.xlsx');
 
     }
+
   
    
 }

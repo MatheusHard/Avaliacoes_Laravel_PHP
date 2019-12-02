@@ -24,9 +24,6 @@ Route::get('cidades/editar/{id}', 'ControllerCidade@edit');
 Route::post('/cidades/{id}', 'ControllerCidade@update');
 
 
-
-
-
 Route::get('avaliacoes', 'ControllerAvaliacao@indexView');
 Route::get('/avaliacoes/novo', 'ControllerAvaliacao@create');
 Route::get('avaliacoes/mostrar/{id}', 'ControllerAvaliacao@show');
@@ -35,7 +32,9 @@ Route::get('avaliacoes/mostrar/{id}', 'ControllerAvaliacao@show');
 /**************************ROTAS EXCEL**************************/
 
 Route::get('/excel/cidades', 'ControllerExcel@exportCidades');
-Route::get('/excel/avaliacoes/{id}', 'ControllerExcel@exportAvaliacoes');
+//Route::get('/excel/avaliacoes/{id}', 'ControllerExcel@exportAvaliacoes');
+Route::post('/excel/avaliacoes', 'ControllerExcel@exportPostAvaliacoes');
+
 
 
 

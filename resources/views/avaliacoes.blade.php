@@ -379,7 +379,7 @@ function checkedFalse(){
    /***********************************GERAR EXCEL************************************/
 
 
-   function gerarExcelAvaliacoes() {
+  /* function gerarExcelAvaliacoes() {
     
     a = {
         id_cidade: $("#id_cidade").val(),
@@ -400,12 +400,43 @@ function checkedFalse(){
             link.click();
           },
         });
-  }
+  }*/
+
+  function gerarExcelPostAvaliacoes() {
+
+    a = {
+        id_cidade: $("#id_cidade").val(),
+        };
+      $.ajax({
+          type: "POST",
+          url: "/excel/avaliacoes",
+          data: a,
+          context: this,
+          xhrFields: {
+            responseType: 'blob'
+          },
+          success: function (blob) {
+            console.log(blob.size);
+            var link=document.createElement('a');
+            link.href=window.URL.createObjectURL(blob);
+            link.download="Avaliacoes_" + new Date(); + ".xlsx";
+            link.click();
+          },
+          error: function(error){
+          console.log(error);
+          }
+        });
+       
+}
+
+
 
   
    $("#formAvaliacoes").submit(function (event) {
    event.preventDefault();
-   gerarExcelAvaliacoes();
+  // gerarExcelAvaliacoes();
+   gerarExcelPostAvaliacoes();
+
   
 });
 

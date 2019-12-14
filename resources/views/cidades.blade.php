@@ -66,13 +66,6 @@
 
 </div>
 
-<form method="POST" action="/excel/avaliacoes">
-  @csrf
-  <input type="text" class="form-control" id="id_cidade" placeholder="Nome da Cidade"> 
-  <button type="submit" class="btn btn-primary">Salvar</button>
-
-</form>
-
 @endsection
 
 @section('javascript')

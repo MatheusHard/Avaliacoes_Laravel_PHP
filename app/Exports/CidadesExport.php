@@ -35,7 +35,7 @@ class CidadesExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
     public function headings(): array
     {
         return [
-            'Código Cidade',
+            'ID',
             'Cidade',
             'Código Uf',
             'Uf',
@@ -54,6 +54,8 @@ class CidadesExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
                 
                 'bold'=>true,
                 'color' => ['argb' => 'FFFF0000'],
+                'size'  => '16'
+
                 ]
 
         ];

@@ -12,6 +12,8 @@ use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 
@@ -22,6 +24,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 
 class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize, WithEvents
 {
+    use Exportable, RegistersEventListeners;
 
     protected $id_cidade;
 
@@ -43,7 +46,7 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
      $arrayAvaliacoes = DB::table('avaliacoes')
      ->join('cidades', 'avaliacoes.id_cidade', '=', 'cidades.id')
      ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
-     ->select('avaliacoes.nome_agente','avaliacoes.cpf_agente', 'avaliacoes.tipo_agente','cidades.descricao_cidade', 'ufs.descricao_uf', 'avaliacoes.radioSim_1','avaliacoes.radioNao_1','avaliacoes.radioMuito_2',
+     ->select('avaliacoes.nome_agente','avaliacoes.cpf_agente', 'cidades.descricao_cidade', 'ufs.descricao_uf', 'avaliacoes.radioSim_1','avaliacoes.radioNao_1','avaliacoes.radioMuito_2',
      'avaliacoes.radiobom_2','avaliacoes.radioRegular_2','avaliacoes.radioRuim_2','avaliacoes.radioSeguro_3','avaliacoes.radioPoucoSeguro_3',
      'avaliacoes.radioInseguro_3','avaliacoes.radioExcessiva_4','avaliacoes.radioRazoavel_4','avaliacoes.radioInsuficiente_4',
      'avaliacoes.radioMuito_5','avaliacoes.radiobom_5','avaliacoes.radioRegular_5','avaliacoes.radioRuim_5',
@@ -65,21 +68,27 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
  {
      return [
 
-         'Nome',
+         '           Nome            ',
          'Cpf',
-         'Agente',
          'Cidade',
          'UF',
-         'Sim',
-         'Não',
+         'Proporcionou',
+         'Não Proporcionou',
          
          'Muito Bom',
-         'Bom',
+         ' Bom ',
          'Regular',
          'Ruim',
 
-         
-         
+         'Seguro',
+         'Pouco Seguro',
+         'Inseguro',
+
+         'Excessiva',
+         'Razoável',
+         'Insuficiente'
+
+                  
      ];
  }
 
@@ -178,15 +187,37 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
                     'color' => ['argb' => '00000000'],
                 ],
-
+            ],
                 'alignment' => [
                     'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 ],
+            ];
 
-              
-            ],
+            $styleHeaders2 = [
+                
+                'font' =>[
+                    
+                    'bold'=>true,
+                    'color' => ['argb' => '#0b140e'],
+                    'size'  => '11'
+    
+                ],
+                'borders' => [
+                    'outline' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                        'color' => ['argb' => '00000000'],
+                    ],
+                ],
+                    'alignment' => [
+                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    ],
+    
+                  
+                
+    
+            ];
 
-        ];
+
 
 
 
@@ -194,49 +225,84 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
             
             BeforeSheet::class => function (BeforeSheet $event) use ($styleArray, $styleTitulo, $styleSubTitulo, $styleCabecalho, $stylePerguntas){
               
+                
                 $cellRangeTitulo ='A1:AQ1';
-                $cellRangeSubTitulo1 ='A3:E3';
-                $cellRangeSubTitulo2 = 'F3:J3';
-                $cellRangeSubTitulo3 =  'K3:S3';
-                $cellRangeCabecalho = 'A5:AQ5';
-                $cellRangePerguntas1 = 'A4:E4';                                //->mergeCells('F3:J3')->setCellValue('F3', 'Conteúdo Teórico')
-                $cellRangePerguntas2 = 'F4:J4';
+                $cellRangeSubTitulo1 ='A3:D3';
+                $cellRangeSubTitulo2 = 'E3:F3';
+                $cellRangeSubTitulo3 =  'G3:S3';
+                $cellRangePerguntas1 = 'A4:D4';                                //->mergeCells('F3:J3')->setCellValue('F3', 'Conteúdo Teórico')
+                $cellRangePerguntas2 = 'E4:F4';
+                $cellRangePerguntas3 = 'G4:J4';
+                $cellRangePerguntas4 = 'K4:M4';
+                $cellRangePerguntas5 = 'N4:P4';
+
 
              
-                            $event->sheet->getStyle($cellRangeCabecalho)->applyFromArray($styleCabecalho);
-                
+                           // $event->sheet->getStyle($cellRangeCabecalho)->applyFromArray($styleCabecalho);
+                          // $event->sheet->setSize('F5', 500, 50);
+
 
                              $event->sheet->setCellValue('A1', 'Avaliações')->mergeCells('A1:AQ1')
                                           ->getStyle($cellRangeTitulo)->applyFromArray($styleTitulo);
                                           
                              
-                                            /***********SUB TITULOS***********/
+                            /****************************SUB TITULOS***************************/
                              
-                            $event->sheet->setCellValue('A3', 'Dados Pessoais')->mergeCells('A3:E3')
+                            $event->sheet->setCellValue('A3', 'Dados Pessoais')->mergeCells('A3:D3')
                                           ->getStyle($cellRangeSubTitulo1)->applyFromArray($styleSubTitulo);
-                            $event->sheet->mergeCells('F3:J3')->setCellValue('F3', 'Conteudo Teórico')
+                            $event->sheet->mergeCells('E3:F3')->setCellValue('E3', 'Conteudo Teórico')
                                           ->getStyle($cellRangeSubTitulo2)->applyFromArray($styleSubTitulo);
-                            //$event->sheet->mergeCells('K3:S3')->setCellValue('K3', 'Conteudo Prático')
-                                         // ->getStyle($cellRangeSubTitulo3)->applyFromArray($styleSubTitulo);
-                            
-                             $event->sheet->mergeCells('A4:E4')->setCellValue('A4', '')
+                            $event->sheet->mergeCells('G3:S3')->setCellValue('G3', 'Conteudo Prático')
+                                         ->getStyle($cellRangeSubTitulo3)->applyFromArray($styleSubTitulo);
+
+                           
+                            /****************************PERGUNTAS***************************/
+
+                             $event->sheet->mergeCells('A4:D4')->setCellValue('A4', 'Profissional')
                                ->getStyle($cellRangePerguntas1)->applyFromArray($stylePerguntas);
 
-                             $event->sheet->mergeCells('F4:J4')->setCellValue('F4', 'Proporcionou novos conhecimentos?')
+                             $event->sheet->mergeCells('E4:F4')->setCellValue('E4', 'Proporcionou novos conhecimentos?')
                                ->getStyle($cellRangePerguntas2)->applyFromArray($stylePerguntas);
 
-                                          //->mergeCells('K4:S4')->setCellValue('K4', 'Clareza/facilidade de trabalho')
-                                          
+                               $event->sheet->mergeCells('G4:J4')->setCellValue('G4', 'Clareza/facilidade de trabalho')
+                               ->getStyle($cellRangePerguntas3)->applyFromArray($stylePerguntas);
 
+                               $event->sheet->mergeCells('K4:M4')->setCellValue('K4', 'Aplicação do processo de trabalho')
+                               ->getStyle($cellRangePerguntas4)->applyFromArray($stylePerguntas);
 
-                             
+                               $event->sheet->mergeCells('N4:P4')->setCellValue('N4', 'Carga Horária')
+                               ->getStyle($cellRangePerguntas5)->applyFromArray($stylePerguntas);
+
+                               
 
 
                 },
 
-            AfterSheet::class => function(AfterSheet $event) use ($styleArray) {
-                $cellRange = 'A1:E1';
-                $event->sheet->getStyle($cellRange)->applyFromArray($styleArray);
+
+
+            AfterSheet::class => function(AfterSheet $event) use ($stylePerguntas, $styleHeaders2) {
+                $cellRangeHeardes1 = 'A5:D5'; 
+                $cellRangeHeardes2 = 'E5:F5';
+                $cellRangeHeardes3 = 'G5:J5'; 
+                $cellRangeHeardes4 = 'K5:M5'; 
+                $cellRangeHeardes5 = 'N5:P5'; 
+
+                
+              
+             // $event->sheet->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+              $event->sheet->getStyle($cellRangeHeardes1)->applyFromArray($stylePerguntas);
+              $event->sheet->getStyle($cellRangeHeardes2)->applyFromArray($stylePerguntas);
+              $event->sheet->getStyle($cellRangeHeardes3)->applyFromArray($stylePerguntas);
+              $event->sheet->getStyle($cellRangeHeardes4)->applyFromArray($stylePerguntas);
+              $event->sheet->getStyle($cellRangeHeardes5)->applyFromArray($stylePerguntas);
+
+
+
+               //$cellRangeHeardes2 = 'F5:J5'; 
+               //$event->sheet->mergeCells('F5:J5')->getStyle($cellRangeHeardes2)->applyFromArray($styleHeaders2);
+    
+               // $cellRange = 'A1:E1';
+               // $event->sheet->getStyle($cellRange)->applyFromArray($styleArray);
            
               //  $event->sheet->setCellValue('A6', '=SUM(A2:A5)');
 

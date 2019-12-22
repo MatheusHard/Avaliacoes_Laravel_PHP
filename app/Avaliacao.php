@@ -28,7 +28,7 @@ class Avaliacao extends Model
 
         'radioMuito_10','radiobom_10','radioRegular_10','radioRuim_10',
 
-        'descricao','cpf_agente','nome_agente','tipo_agente','id_cidade','datahora'
+        'descricao', 'datahora', 'profissional_id'
 
     ];
 }

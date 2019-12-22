@@ -63,11 +63,10 @@ class CreateAvaliacoesTable extends Migration
             $table->tinyInteger('radioRuim_10');
 
             $table->string('descricao', 100)->nullable();
-            $table->string('cpf_agente', 11)->unique();
-            $table->string('nome_agente', 250);
-            $table->tinyInteger('tipo_agente');
-            $table->tinyInteger('id_cidade');
             $table->timestamp('datahora');
+
+            $table->integer('profissional_id')->unsigned();
+            $table->foreign('profissional_id')->references('id')->on('profissionais');
             
             $table->timestamps();
         });
@@ -83,3 +82,5 @@ class CreateAvaliacoesTable extends Migration
         Schema::dropIfExists('avaliacoes');
     }
 }
+
+

@@ -197,12 +197,12 @@ $.ajaxSetup({
 
   
     function montarLinha(a) {
-      console.log("MOntar:"+ a.tipo_agente);
+      console.log("MOntar:"+ a.tipo_profissional);
       var  linha = "<tr>"+
-        "<td>"+a.nome_agente+"</td>"+
-        "<td>"+a.cpf_agente+"</td>"+
+        "<td>"+a.descricao_profissional+"</td>"+
+        "<td>"+a.cpf_profissional+"</td>"+
         "<td>"+a.descricao_cidade+ "/" + a.descricao_uf +"</td>"+
-        "<td>"+tipoAgente(a.tipo_agente)+"</td>"+
+        "<td>"+tipoAgente(a.tipo_profissional)+"</td>"+
         "<td>"+
           '<button class="btn btn-xs btn-primary botoes" onclick="exibir('+a.id+')">Resumo</button>'+
  
@@ -271,8 +271,8 @@ $.ajaxSetup({
          if(data[0].radioRuim_10 == 1){$("#radioRuim_10").attr('checked', true);}
         
          if(data[0].descricao == 1){$("#descricao").attr('checked', true);}
-         if(data[0].nome_agente == 1){$("#nome_agente").attr('checked', true);}
-         if(data[0].tipo_agente == 1){$("#tipo_agente").attr('checked', true);}
+         if(data[0].descricao_profissional == 1){$("#nome_agente").attr('checked', true);}
+         if(data[0].tipo_profissional == 1){$("#tipo_agente").attr('checked', true);}
 
          if(data[0].descricao != "")$('#sugestoes_11').text(data[0].descricao);
 

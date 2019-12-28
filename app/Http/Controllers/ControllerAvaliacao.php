@@ -26,8 +26,7 @@ class ControllerAvaliacao extends Controller
         //JOIN cidades ON profissionais.cidade_id = cidades.id
 
       $arrayAvaliacoes = DB::table('avaliacoes')
-        ->join('profissionais', 'avaliacoes.profissional_id', '=', 'profissionais.id')
-        ->join('cidades', 'profissionais.cidade_id', '=', 'cidades.id')
+        ->join('cidades', 'avaliacoes.cidade_id', '=', 'cidades.id')
         ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
         ->select( 'avaliacoes.id', 'avaliacoes.radioSim_1','avaliacoes.radioNao_1','avaliacoes.radioMuito_2',
         'avaliacoes.radiobom_2','avaliacoes.radioRegular_2','avaliacoes.radioRuim_2','avaliacoes.radioSeguro_3','avaliacoes.radioPoucoSeguro_3',
@@ -38,8 +37,8 @@ class ControllerAvaliacao extends Controller
         'avaliacoes.radioMuito_8','avaliacoes.radiobom_8','avaliacoes.radioRegular_8','avaliacoes.radioRuim_8',
         'avaliacoes.radioMuito_9','avaliacoes.radiobom_9','avaliacoes.radioRegular_9','avaliacoes.radioRuim_9',
         'avaliacoes.radioMuito_10','avaliacoes.radiobom_10','avaliacoes.radioRegular_10','avaliacoes.radioRuim_10',
-        'avaliacoes.descricao','avaliacoes.descricao','profissionais.cpf_profissional','profissionais.descricao_profissional','profissionais.tipo_profissional',
-        'avaliacoes.datahora','avaliacoes.created_at as avaliacoes_created_at','avaliacoes.updated_at as avaliacoes_updated_at',
+        'avaliacoes.descricao', 'avaliacoes.cpf_profissional','avaliacoes.descricao_profissional','avaliacoes.tipo_profissional',
+        'avaliacoes.descricao_tipo_profissional', 'avaliacoes.datahora','avaliacoes.created_at as avaliacoes_created_at','avaliacoes.updated_at as avaliacoes_updated_at',
         'cidades.id as cidade_id', 'cidades.descricao_cidade', 'cidades.created_at as cidades_updated_at', 'cidades.updated_at as cidades_updated_at', 
         'ufs.id as uf_id', 'ufs.descricao_uf', 'ufs.created_at as uf_created_at', 'ufs.updated_at as uf_updated_at')
         ->get();
@@ -121,11 +120,11 @@ class ControllerAvaliacao extends Controller
                 'radioRuim_10' => $request->input('radioRuim_10'),
 
                 'descricao' => $request->input('descricao'),
-                'id_cidade' => $request->input('id_cidade'),
-                'nome_agente' => $request->input('nome_agente'),
-                'tipo_agente' => $request->input('tipo_agente'),
+                'cidade_id' => $request->input('id_cidade'),
+                'descricao_profissional' => $request->input('nome_agente'),
+                'tipo_profissional' => $request->input('tipo_agente'),
                 'datahora' => $request->input('datahora'),
-                'cpf_agente' => $request->input('cpf_agente')
+                'cpf_profissiona' => $request->input('cpf_agente')
 
                  ]
             ]);
@@ -146,9 +145,9 @@ class ControllerAvaliacao extends Controller
     public function show($id)
     {
         $arrayAvaliacoes = DB::table('avaliacoes')
-        ->join('cidades', 'avaliacoes.id_cidade', '=', 'cidades.id')
+        ->join('cidades', 'avaliacoes.cidade_id', '=', 'cidades.id')
         ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
-        ->select( 'avaliacoes.id',  'avaliacoes.radioSim_1','avaliacoes.radioNao_1','avaliacoes.radioMuito_2',
+        ->select( 'avaliacoes.id', 'avaliacoes.radioSim_1','avaliacoes.radioNao_1','avaliacoes.radioMuito_2',
         'avaliacoes.radiobom_2','avaliacoes.radioRegular_2','avaliacoes.radioRuim_2','avaliacoes.radioSeguro_3','avaliacoes.radioPoucoSeguro_3',
         'avaliacoes.radioInseguro_3','avaliacoes.radioExcessiva_4','avaliacoes.radioRazoavel_4','avaliacoes.radioInsuficiente_4',
         'avaliacoes.radioMuito_5','avaliacoes.radiobom_5','avaliacoes.radioRegular_5','avaliacoes.radioRuim_5',
@@ -157,8 +156,8 @@ class ControllerAvaliacao extends Controller
         'avaliacoes.radioMuito_8','avaliacoes.radiobom_8','avaliacoes.radioRegular_8','avaliacoes.radioRuim_8',
         'avaliacoes.radioMuito_9','avaliacoes.radiobom_9','avaliacoes.radioRegular_9','avaliacoes.radioRuim_9',
         'avaliacoes.radioMuito_10','avaliacoes.radiobom_10','avaliacoes.radioRegular_10','avaliacoes.radioRuim_10',
-        'avaliacoes.descricao','avaliacoes.cpf_agente','avaliacoes.nome_agente','avaliacoes.tipo_agente','avaliacoes.id_cidade',
-        'avaliacoes.datahora', 'avaliacoes.descricao','avaliacoes.created_at as avaliacoes_created_at','avaliacoes.updated_at as avaliacoes_updated_at',
+        'avaliacoes.descricao', 'avaliacoes.cpf_profissional','avaliacoes.descricao_profissional','avaliacoes.tipo_profissional',
+        'avaliacoes.descricao_tipo_profissional', 'avaliacoes.datahora','avaliacoes.created_at as avaliacoes_created_at','avaliacoes.updated_at as avaliacoes_updated_at',
         'cidades.id as cidade_id', 'cidades.descricao_cidade', 'cidades.created_at as cidades_updated_at', 'cidades.updated_at as cidades_updated_at', 
         'ufs.id as uf_id', 'ufs.descricao_uf', 'ufs.created_at as uf_created_at', 'ufs.updated_at as uf_updated_at')
         ->where('avaliacoes.id', $id)

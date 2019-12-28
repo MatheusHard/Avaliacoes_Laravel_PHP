@@ -13,6 +13,8 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -21,32 +23,45 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Illuminate\Support\Facades\DB;
 
 use Maatwebsite\Excel\Concerns\Exportable;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize, WithEvents
+class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize, WithEvents, WithColumnFormatting
 {
     use Exportable, RegistersEventListeners;
 
     protected $id_cidade;
-
+    protected $stringBuilder;
+    
     public function __construct($id_city)
     {
         $this->id_cidade = $id_city;
         
     }
     
-
+   
    
 
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection(){
- 
+         
+        $conditions=[];
+
+        if(isset($this->id_cidade)){
+            $conditions[]=['avaliacoes.cidade_id', $this->id_cidade];
+        }
+    
+       /* if(isset($this->stringBuilder)){
+            $conditions[]=['createdAt', '<=', $this->to];
+        }*/
+    
      $this->a = new Avaliacao();
      $arrayAvaliacoes = DB::table('avaliacoes')
-     ->join('cidades', 'avaliacoes.id_cidade', '=', 'cidades.id')
+     ->join('cidades', 'avaliacoes.cidade_id', '=', 'cidades.id')
      ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
-     ->select('avaliacoes.nome_agente','avaliacoes.cpf_agente', 'cidades.descricao_cidade', 'ufs.descricao_uf', 'avaliacoes.radioSim_1','avaliacoes.radioNao_1','avaliacoes.radioMuito_2',
+     ->select('avaliacoes.descricao_profissional','avaliacoes.cpf_profissional', 'avaliacoes.descricao_tipo_profissional', 'cidades.descricao_cidade', 'ufs.descricao_uf',
+     'avaliacoes.radioSim_1','avaliacoes.radioNao_1','avaliacoes.radioMuito_2',
      'avaliacoes.radiobom_2','avaliacoes.radioRegular_2','avaliacoes.radioRuim_2','avaliacoes.radioSeguro_3','avaliacoes.radioPoucoSeguro_3',
      'avaliacoes.radioInseguro_3','avaliacoes.radioExcessiva_4','avaliacoes.radioRazoavel_4','avaliacoes.radioInsuficiente_4',
      'avaliacoes.radioMuito_5','avaliacoes.radiobom_5','avaliacoes.radioRegular_5','avaliacoes.radioRuim_5',
@@ -56,10 +71,10 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
      'avaliacoes.radioMuito_9','avaliacoes.radiobom_9','avaliacoes.radioRegular_9','avaliacoes.radioRuim_9',
      'avaliacoes.radioMuito_10','avaliacoes.radiobom_10','avaliacoes.radioRegular_10','avaliacoes.radioRuim_10',
      'avaliacoes.descricao', 'avaliacoes.datahora', 'avaliacoes.updated_at as avaliacoes_updated_at')
-     ->where('avaliacoes.id_cidade', $this->id_cidade)
+     ->orderBy('avaliacoes.descricao_profissional', 'asc')
+     ->where($conditions)
      ->get();
      
-     //return dd('yeah', $arrayAvaliacoes);
      return $arrayAvaliacoes;
  }
 
@@ -70,6 +85,7 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
 
          '           Nome            ',
          'Cpf',
+         'Função',
          'Cidade',
          'UF',
          'Proporcionou',
@@ -86,13 +102,51 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
 
          'Excessiva',
          'Razoável',
-         'Insuficiente'
+         'Insuficiente',
+         
+         'Muito Bom',
+         ' Bom ',
+         'Regular',
+         'Ruim',
 
-                  
+         'Muito Bom',
+         ' Bom ',
+         'Regular',
+         'Ruim',
+
+         'Muito Bom',
+         ' Bom ',
+         'Regular',
+         ' Ruim ',
+
+         'Muito Bom',
+         ' Bom ',
+         'Regular',
+         'Ruim',
+
+         'Muito Bom',
+         ' Bom ',
+         'Regular',
+         'Ruim',
+
+         'Muito Bom',
+         ' Bom ',
+         'Regular',
+         ' Ruim ',
+         '              Dicas/Melhorias/Reclamações              ',
+         'Data e Hora da Avaliação'
+       
      ];
  }
 
   
+ public function columnFormats(): array
+    {
+        return [
+            'AQ' => NumberFormat::FORMAT_DATE_DDMMYYYY
+        ];
+    }
+
  /**
      * @return array
      */
@@ -212,14 +266,7 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
                         'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                     ],
     
-                  
-                
-    
             ];
-
-
-
-
 
                 return [
             
@@ -227,20 +274,36 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
               
                 
                 $cellRangeTitulo ='A1:AQ1';
-                $cellRangeSubTitulo1 ='A3:D3';
-                $cellRangeSubTitulo2 = 'E3:F3';
-                $cellRangeSubTitulo3 =  'G3:S3';
-                $cellRangePerguntas1 = 'A4:D4';                                //->mergeCells('F3:J3')->setCellValue('F3', 'Conteúdo Teórico')
-                $cellRangePerguntas2 = 'E4:F4';
-                $cellRangePerguntas3 = 'G4:J4';
-                $cellRangePerguntas4 = 'K4:M4';
-                $cellRangePerguntas5 = 'N4:P4';
+                $cellRangeSubTitulo1 ='A3:E3';
+                $cellRangeSubTitulo2 = 'F3:G3';
+                $cellRangeSubTitulo3 = 'G3:Q3';
+                $cellRangeSubTitulo4 = 'R3:AC3';
+                $cellRangeSubTitulo5 = 'AD3:AO3';
+                $cellRangeSubTitulo6 = 'AP3';
+                $cellRangeSubTitulo7 = 'AQ3';
 
+
+
+
+                $cellRangePerguntas1 = 'A4:E4';                                //->mergeCells('F3:J3')->setCellValue('F3', 'Conteúdo Teórico')
+                $cellRangePerguntas2 = 'F4:G4';
+                $cellRangePerguntas3 = 'H4:K4';
+                $cellRangePerguntas4 = 'L4:N4';
+                $cellRangePerguntas5 = 'O4:Q4';
+                $cellRangePerguntas6 = 'R4:U4';
+                $cellRangePerguntas7 = 'V4:Y4';
+                $cellRangePerguntas8 = 'Z4:AC4';
+                $cellRangePerguntas9 = 'AD4:AG4';
+                $cellRangePerguntas10 = 'AH4:AK4';
+                $cellRangePerguntas11 = 'AL4:AO4';
+                $cellRangePerguntas12 = 'AP4';
+                $cellRangePerguntas13 = 'AQ4';
 
              
                            // $event->sheet->getStyle($cellRangeCabecalho)->applyFromArray($styleCabecalho);
                           // $event->sheet->setSize('F5', 500, 50);
-
+                           
+                          /****************************TITULOS***************************/
 
                              $event->sheet->setCellValue('A1', 'Avaliações')->mergeCells('A1:AQ1')
                                           ->getStyle($cellRangeTitulo)->applyFromArray($styleTitulo);
@@ -248,54 +311,96 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
                              
                             /****************************SUB TITULOS***************************/
                              
-                            $event->sheet->setCellValue('A3', 'Dados Pessoais')->mergeCells('A3:D3')
+                            $event->sheet->setCellValue('A3', 'Dados Pessoais')->mergeCells('A3:E3')
                                           ->getStyle($cellRangeSubTitulo1)->applyFromArray($styleSubTitulo);
-                            $event->sheet->mergeCells('E3:F3')->setCellValue('E3', 'Conteudo Teórico')
+                            $event->sheet->mergeCells('F3:G3')->setCellValue('F3', 'Conteudo Teórico')
                                           ->getStyle($cellRangeSubTitulo2)->applyFromArray($styleSubTitulo);
-                            $event->sheet->mergeCells('G3:S3')->setCellValue('G3', 'Conteudo Prático')
+                            $event->sheet->mergeCells('H3:Q3')->setCellValue('H3', 'Conteudo Prático')
                                          ->getStyle($cellRangeSubTitulo3)->applyFromArray($styleSubTitulo);
+                            $event->sheet->mergeCells('R3:AC3')->setCellValue('R3', 'Instrutor')
+                                         ->getStyle($cellRangeSubTitulo4)->applyFromArray($styleSubTitulo);
+                            $event->sheet->mergeCells('AD3:AO3')->setCellValue('AD3', 'Equipe de Apoio')
+                                         ->getStyle($cellRangeSubTitulo5)->applyFromArray($styleSubTitulo);
+                            $event->sheet->setCellValue('AP3', 'Sugestões')
+                                         ->getStyle($cellRangeSubTitulo6)->applyFromArray($styleSubTitulo);
+                            $event->sheet->setCellValue('AQ3', 'Data/Hora')
+                                         ->getStyle($cellRangeSubTitulo7)->applyFromArray($styleSubTitulo);
 
-                           
                             /****************************PERGUNTAS***************************/
 
-                             $event->sheet->mergeCells('A4:D4')->setCellValue('A4', 'Profissional')
+                             $event->sheet->mergeCells('A4:E4')->setCellValue('A4', 'Profissional')
                                ->getStyle($cellRangePerguntas1)->applyFromArray($stylePerguntas);
 
-                             $event->sheet->mergeCells('E4:F4')->setCellValue('E4', 'Proporcionou novos conhecimentos?')
+                             $event->sheet->mergeCells('F4:G4')->setCellValue('F4', 'Proporcionou novos conhecimentos?')
                                ->getStyle($cellRangePerguntas2)->applyFromArray($stylePerguntas);
 
-                               $event->sheet->mergeCells('G4:J4')->setCellValue('G4', 'Clareza/facilidade de trabalho')
+                               $event->sheet->mergeCells('H4:K4')->setCellValue('H4', 'Clareza/facilidade de trabalho')
                                ->getStyle($cellRangePerguntas3)->applyFromArray($stylePerguntas);
 
-                               $event->sheet->mergeCells('K4:M4')->setCellValue('K4', 'Aplicação do processo de trabalho')
+                               $event->sheet->mergeCells('L4:N4')->setCellValue('L4', 'Aplicação do processo de trabalho')
                                ->getStyle($cellRangePerguntas4)->applyFromArray($stylePerguntas);
 
-                               $event->sheet->mergeCells('N4:P4')->setCellValue('N4', 'Carga Horária')
+                               $event->sheet->mergeCells('O4:Q4')->setCellValue('O4', 'Carga Horária')
                                ->getStyle($cellRangePerguntas5)->applyFromArray($stylePerguntas);
 
+                               $event->sheet->mergeCells('R4:U4')->setCellValue('R4', 'Conhecimento do Conteúdo')
+                               ->getStyle($cellRangePerguntas6)->applyFromArray($stylePerguntas);
                                
+                               $event->sheet->mergeCells('V4:Y4')->setCellValue('V4', 'Clareza na Exposição')
+                               ->getStyle($cellRangePerguntas7)->applyFromArray($stylePerguntas);
+                               
+                               $event->sheet->mergeCells('Z4:AC4')->setCellValue('Z4', 'Disponibilidade para Esclarecer Dúvidas')
+                               ->getStyle($cellRangePerguntas8)->applyFromArray($stylePerguntas);
+                              
+                               $event->sheet->mergeCells('AD4:AG4')->setCellValue('AD4', 'Conhecimento do Conteúdo')
+                               ->getStyle($cellRangePerguntas9)->applyFromArray($stylePerguntas);
+                               
+                               $event->sheet->mergeCells('AH4:AK4')->setCellValue('AH4', 'Clareza na Exposição')
+                               ->getStyle($cellRangePerguntas10)->applyFromArray($stylePerguntas);
+                               
+                               $event->sheet->mergeCells('AL4:AO4')->setCellValue('AL4', 'Disponibilidade para Esclarecer Dúvidas')
+                               ->getStyle($cellRangePerguntas11)->applyFromArray($stylePerguntas);
 
+                               $event->sheet->setCellValue('AP4', '#')
+                               ->getStyle($cellRangePerguntas12)->applyFromArray($stylePerguntas);
+
+                               $event->sheet->setCellValue('AQ4', '#')
+                               ->getStyle($cellRangePerguntas13)->applyFromArray($stylePerguntas);
 
                 },
 
 
 
             AfterSheet::class => function(AfterSheet $event) use ($stylePerguntas, $styleHeaders2) {
-                $cellRangeHeardes1 = 'A5:D5'; 
-                $cellRangeHeardes2 = 'E5:F5';
-                $cellRangeHeardes3 = 'G5:J5'; 
-                $cellRangeHeardes4 = 'K5:M5'; 
-                $cellRangeHeardes5 = 'N5:P5'; 
-
-                
               
+                $cellRangeHeardes1 = 'A5:E5'; 
+                $cellRangeHeardes2 = 'F5:G5';
+                $cellRangeHeardes3 = 'H5:K5'; 
+                $cellRangeHeardes4 = 'L5:N5'; 
+                $cellRangeHeardes5 = 'O5:Q5'; 
+                $cellRangeHeardes6 = 'R5:U5'; 
+                $cellRangeHeardes7 = 'V5:Y5'; 
+                $cellRangeHeardes8 = 'Z5:AC5'; 
+                $cellRangeHeardes9 = 'AD5:AG5'; 
+                $cellRangeHeardes10 = 'AH5:AK5'; 
+                $cellRangeHeardes11 = 'AL5:AO5';
+                $cellRangeHeardes12 = 'AP5';
+                $cellRangeHeardes13 = 'AQ5';
+
              // $event->sheet->getActiveSheet()->getColumnDimension('F')->setWidth(20);
               $event->sheet->getStyle($cellRangeHeardes1)->applyFromArray($stylePerguntas);
               $event->sheet->getStyle($cellRangeHeardes2)->applyFromArray($stylePerguntas);
               $event->sheet->getStyle($cellRangeHeardes3)->applyFromArray($stylePerguntas);
               $event->sheet->getStyle($cellRangeHeardes4)->applyFromArray($stylePerguntas);
               $event->sheet->getStyle($cellRangeHeardes5)->applyFromArray($stylePerguntas);
-
+              $event->sheet->getStyle($cellRangeHeardes6)->applyFromArray($stylePerguntas);
+              $event->sheet->getStyle($cellRangeHeardes7)->applyFromArray($stylePerguntas);
+              $event->sheet->getStyle($cellRangeHeardes8)->applyFromArray($stylePerguntas);
+              $event->sheet->getStyle($cellRangeHeardes9)->applyFromArray($stylePerguntas);
+              $event->sheet->getStyle($cellRangeHeardes10)->applyFromArray($stylePerguntas);
+              $event->sheet->getStyle($cellRangeHeardes11)->applyFromArray($stylePerguntas);
+              $event->sheet->getStyle($cellRangeHeardes12)->applyFromArray($stylePerguntas);
+              $event->sheet->getStyle($cellRangeHeardes13)->applyFromArray($stylePerguntas);
 
 
                //$cellRangeHeardes2 = 'F5:J5'; 

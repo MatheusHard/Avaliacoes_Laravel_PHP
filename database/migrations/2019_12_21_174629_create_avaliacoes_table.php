@@ -61,13 +61,15 @@ class CreateAvaliacoesTable extends Migration
             $table->tinyInteger('radiobom_10');
             $table->tinyInteger('radioRegular_10');
             $table->tinyInteger('radioRuim_10');
-
+            $table->string('cpf_profissional', 11);
+            $table->string('descricao_profissional', 150);
+            $table->tinyInteger('tipo_profissional');
+            $table->string('descricao_tipo_profissional', 35);
             $table->string('descricao', 100)->nullable();
+            $table->integer('cidade_id')->unsigned();
+            $table->foreign('cidade_id')->references('id')->on('cidades');
             $table->timestamp('datahora');
 
-            $table->integer('profissional_id')->unsigned();
-            $table->foreign('profissional_id')->references('id')->on('profissionais');
-            
             $table->timestamps();
         });
     }

@@ -28,7 +28,9 @@ class Avaliacao extends Model
 
         'radioMuito_10','radiobom_10','radioRegular_10','radioRuim_10',
 
-        'descricao', 'datahora', 'profissional_id'
+        'cpf_profissional', 'descricao_profissional', 'tipo_profissional',
+
+       'descricao_tipo_profissional', 'descricao', 'cidade_id', 'datahora'
 
     ];
 }

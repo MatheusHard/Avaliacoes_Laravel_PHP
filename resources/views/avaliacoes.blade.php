@@ -202,7 +202,7 @@ $.ajaxSetup({
         "<td>"+a.descricao_profissional+"</td>"+
         "<td>"+a.cpf_profissional+"</td>"+
         "<td>"+a.descricao_cidade+ "/" + a.descricao_uf +"</td>"+
-        "<td>"+tipoAgente(a.tipo_profissional)+"</td>"+
+        "<td>"+a.descricao_tipo_profissional+"</td>"+
         "<td>"+
           '<button class="btn btn-xs btn-primary botoes" onclick="exibir('+a.id+')">Resumo</button>'+
  
@@ -270,7 +270,7 @@ $.ajaxSetup({
          if(data[0].radioRegular_10 == 1){$("#radioRegular_10").attr('checked', true);}
          if(data[0].radioRuim_10 == 1){$("#radioRuim_10").attr('checked', true);}
         
-         if(data[0].descricao == 1){$("#descricao").attr('checked', true);}
+        // if(data[0].descricao == 1){$("#descricao").attr('checked', true);}
          if(data[0].descricao_profissional == 1){$("#nome_agente").attr('checked', true);}
          if(data[0].tipo_profissional == 1){$("#tipo_agente").attr('checked', true);}
 
@@ -304,7 +304,9 @@ $.ajaxSetup({
     $.getJSON('/api/cidades' , function(data){
 
       for( i = 0; i < data.length; i++){
+        
       opcao = '<option  select  value="'+ data[i].id +'">'+ data[i].descricao_cidade+ $barra + data[i].descricao_uf + '</option>';
+      
       $('#id_cidade').append(opcao);
       }
       });
@@ -379,29 +381,6 @@ function checkedFalse(){
    /***********************************GERAR EXCEL************************************/
 
 
-  /* function gerarExcelAvaliacoes() {
-    
-    a = {
-        id_cidade: $("#id_cidade").val(),
-        };
-    
-       $.ajax({
-          type: "GET",
-          url: "/excel/avaliacoes/"+a.id_cidade,
-          context: this,
-          xhrFields: {
-            responseType: 'blob'
-          },
-          success: function (blob) {
-            console.log(blob.size);
-            var link=document.createElement('a');
-            link.href=window.URL.createObjectURL(blob);
-            link.download="Avaliacoes_" + new Date() + ".xlsx";
-            link.click();
-          },
-        });
-  }*/
-
   function gerarExcelPostAvaliacoes() {
 
     a = {
@@ -429,14 +408,11 @@ function checkedFalse(){
        
 }
 
-
-
   
    $("#formAvaliacoes").submit(function (event) {
    event.preventDefault();
-  // gerarExcelAvaliacoes();
-   gerarExcelPostAvaliacoes();
 
+   gerarExcelPostAvaliacoes();
   
 });
 

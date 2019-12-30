@@ -25,12 +25,15 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Exportable;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize, WithEvents, WithColumnFormatting
+class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize, WithEvents
 {
     use Exportable, RegistersEventListeners;
 
     protected $id_cidade;
     protected $stringBuilder;
+    protected $arraySize = [];
+
+    private $sim1;
     
     public function __construct($id_city)
     {
@@ -52,11 +55,8 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
             $conditions[]=['avaliacoes.cidade_id', $this->id_cidade];
         }
     
-       /* if(isset($this->stringBuilder)){
-            $conditions[]=['createdAt', '<=', $this->to];
-        }*/
-    
      $this->a = new Avaliacao();
+
      $arrayAvaliacoes = DB::table('avaliacoes')
      ->join('cidades', 'avaliacoes.cidade_id', '=', 'cidades.id')
      ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
@@ -74,6 +74,8 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
      ->orderBy('avaliacoes.descricao_profissional', 'asc')
      ->where($conditions)
      ->get();
+
+     $this->arraySize = $arrayAvaliacoes;
      
      return $arrayAvaliacoes;
  }
@@ -81,7 +83,8 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
 
  public function headings(): array
  {
-     return [
+     return  $this->export =
+      [
 
          '           Nome            ',
          'Cpf',
@@ -140,12 +143,7 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
  }
 
   
- public function columnFormats(): array
-    {
-        return [
-            'AQ' => NumberFormat::FORMAT_DATE_DDMMYYYY
-        ];
-    }
+ 
 
  /**
      * @return array
@@ -282,10 +280,7 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
                 $cellRangeSubTitulo6 = 'AP3';
                 $cellRangeSubTitulo7 = 'AQ3';
 
-
-
-
-                $cellRangePerguntas1 = 'A4:E4';                                //->mergeCells('F3:J3')->setCellValue('F3', 'Conteúdo Teórico')
+                $cellRangePerguntas1 = 'A4:E4';                                
                 $cellRangePerguntas2 = 'F4:G4';
                 $cellRangePerguntas3 = 'H4:K4';
                 $cellRangePerguntas4 = 'L4:N4';
@@ -300,8 +295,6 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
                 $cellRangePerguntas13 = 'AQ4';
 
              
-                           // $event->sheet->getStyle($cellRangeCabecalho)->applyFromArray($styleCabecalho);
-                          // $event->sheet->setSize('F5', 500, 50);
                            
                           /****************************TITULOS***************************/
 
@@ -366,6 +359,9 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
 
                                $event->sheet->setCellValue('AQ4', '#')
                                ->getStyle($cellRangePerguntas13)->applyFromArray($stylePerguntas);
+                                
+                             
+                               
 
                 },
 
@@ -387,7 +383,6 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
                 $cellRangeHeardes12 = 'AP5';
                 $cellRangeHeardes13 = 'AQ5';
 
-             // $event->sheet->getActiveSheet()->getColumnDimension('F')->setWidth(20);
               $event->sheet->getStyle($cellRangeHeardes1)->applyFromArray($stylePerguntas);
               $event->sheet->getStyle($cellRangeHeardes2)->applyFromArray($stylePerguntas);
               $event->sheet->getStyle($cellRangeHeardes3)->applyFromArray($stylePerguntas);
@@ -402,19 +397,39 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
               $event->sheet->getStyle($cellRangeHeardes12)->applyFromArray($stylePerguntas);
               $event->sheet->getStyle($cellRangeHeardes13)->applyFromArray($stylePerguntas);
 
+  
+/******************************TOTAIS e PORCENTAGENS******************************/
+               $totalPorc = count($this->arraySize);
+               $inicioResults = 7;
+               $size = (6 + count($this->arraySize));
+               $columnTotal = ($inicioResults + count($this->arraySize));
+               $columnPorcentagem = $columnTotal + 1;
 
-               //$cellRangeHeardes2 = 'F5:J5'; 
-               //$event->sheet->mergeCells('F5:J5')->getStyle($cellRangeHeardes2)->applyFromArray($styleHeaders2);
-    
-               // $cellRange = 'A1:E1';
-               // $event->sheet->getStyle($cellRange)->applyFromArray($styleArray);
-           
-              //  $event->sheet->setCellValue('A6', '=SUM(A2:A5)');
+               $event->sheet->setCellValue('A'.$columnTotal, 'Total');
+               $event->sheet->setCellValue('A'.$columnPorcentagem, 'Porcentos');
 
+             
+             /********************PRINTAR OS TOTAIS********************/
+              
+              $letter_1 = range("F","Z");
+              $A = "A";
+              $letter_2 = range("A","O");
+              
+              foreach($letter_1 as $letra){
+               $event->sheet->setCellValue($letra.$columnTotal, '=SUM('.$letra.'6:'.$letra.''.$size.')');
+                 foreach($letter_2 as $letra2){
+                    $event->sheet->setCellValue($A.$letra2.$columnTotal, '=SUM('.$A.$letra2.'6:'.$A.$letra2.''.$size.')');
+                }  
+              }   
+             /***********************************************************/
+             
+               $event->sheet->setCellValue('F'.$columnPorcentagem, '=soma(=SUM(F6:F'.$size.') * 100)/ $totalPorc)');
+              // $event->sheet->setCellValue('H'.$columnTotal,'=PERCENTILE(F6:F'.$size. ',F15)');*/
+            
             },
         ];
     }
 
-
+   
 }
 

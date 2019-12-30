@@ -281,6 +281,10 @@ $.ajaxSetup({
         });
        }
 
+
+/***************TESTES******************/
+
+
       /************************************LISTAR************************************/
       
        function listarAvaliacoes (){
@@ -297,11 +301,11 @@ $.ajaxSetup({
 
     $barra = "/";
 
-
-
     function listarCidades(){
 
     $.getJSON('/api/cidades' , function(data){
+      
+     
 
       for( i = 0; i < data.length; i++){
         

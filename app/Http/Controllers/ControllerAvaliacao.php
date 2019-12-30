@@ -121,10 +121,12 @@ class ControllerAvaliacao extends Controller
 
                 'descricao' => $request->input('descricao'),
                 'cidade_id' => $request->input('id_cidade'),
-                'descricao_profissional' => $request->input('nome_agente'),
-                'tipo_profissional' => $request->input('tipo_agente'),
+                /*******Mudanças*********/
+                'descricao_profissional' => $request->input('descricao_profissional'),
+                'descricao_tipo_profissional' => $request->input('descricao_tipo_profissional'),
+                'tipo_profissional' => $request->input('tipo_profissional'),
                 'datahora' => $request->input('datahora'),
-                'cpf_profissiona' => $request->input('cpf_agente')
+                'cpf_profissional' => $request->input('cpf_profissional')
 
                  ]
             ]);

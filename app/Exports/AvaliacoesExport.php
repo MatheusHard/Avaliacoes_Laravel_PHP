@@ -33,7 +33,6 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
     protected $stringBuilder;
     protected $arraySize = [];
 
-    private $sim1;
     
     public function __construct($id_city)
     {
@@ -422,9 +421,22 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
                 }  
               }   
              /***********************************************************/
-             
-               $event->sheet->setCellValue('F'.$columnPorcentagem, '=soma(=SUM(F6:F'.$size.') * 100)/ $totalPorc)');
-              // $event->sheet->setCellValue('H'.$columnTotal,'=PERCENTILE(F6:F'.$size. ',F15)');*/
+             $cem = 100;
+             $sim_1 = 0;
+             $nao_1 = 0;
+
+             foreach($this->arraySize as $avaliacao){
+                $sim_1+= $avaliacao->radioSim_1;
+                $nao_1+= $avaliacao->radioNao_1;
+                
+             }
+             //$event->sheet->setCellValue('F'.$columnPorcentagem, 4 * 100/ $totalPorc);
+            //$event->sheet->setCellValue('F'.$columnPorcentagem, '=SUM(F6:'. $size.')'.  $cem/$totalPorc);
+            $event->sheet->setCellValue('F'.$columnPorcentagem, $sim_1 * $cem / $totalPorc);
+            $event->sheet->setCellValue('G'.$columnPorcentagem, number_format(($nao_1 *  $cem / $totalPorc)), 2, '.', '');
+
+            
+              
             
             },
         ];

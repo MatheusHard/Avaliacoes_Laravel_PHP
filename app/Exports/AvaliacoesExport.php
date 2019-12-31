@@ -88,7 +88,7 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
          '           Nome            ',
          'Cpf',
          'Função',
-         'Cidade',
+         ' Cidade ',
          'UF',
          'Proporcionou',
          'Não Proporcionou',
@@ -196,6 +196,7 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
                 'alignment' => [
                     'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 ],
+                
                
 
         ];
@@ -230,7 +231,8 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
                 
                 'bold'=>true,
                 'color' => ['argb' => '#0b140e'],
-                'size'  => '11'
+                'size'  => '11',
+
 
             ],
             'borders' => [
@@ -242,6 +244,7 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
                 'alignment' => [
                     'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 ],
+              
             ];
 
             $styleHeaders2 = [
@@ -382,6 +385,7 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
                 $cellRangeHeardes12 = 'AP5';
                 $cellRangeHeardes13 = 'AQ5';
 
+
               $event->sheet->getStyle($cellRangeHeardes1)->applyFromArray($stylePerguntas);
               $event->sheet->getStyle($cellRangeHeardes2)->applyFromArray($stylePerguntas);
               $event->sheet->getStyle($cellRangeHeardes3)->applyFromArray($stylePerguntas);
@@ -396,19 +400,49 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
               $event->sheet->getStyle($cellRangeHeardes12)->applyFromArray($stylePerguntas);
               $event->sheet->getStyle($cellRangeHeardes13)->applyFromArray($stylePerguntas);
 
+
+              
   
-/******************************TOTAIS e PORCENTAGENS******************************/
+            /****CALCULAR CELULAS ONDE OS TOTAIS e PORCENTAGENS DEVEM FICAR****/
+
                $totalPorc = count($this->arraySize);
                $inicioResults = 7;
                $size = (6 + count($this->arraySize));
                $columnTotal = ($inicioResults + count($this->arraySize));
                $columnPorcentagem = $columnTotal + 1;
+               
+              
+               $event->sheet->mergeCells('D'.$columnTotal.':E'.$columnTotal)->setCellValue('D'.$columnTotal, ' Totais-> ')
+               ->getStyle('D'.$columnTotal.':E'.$columnTotal)->applyFromArray($stylePerguntas);
 
-               $event->sheet->setCellValue('A'.$columnTotal, 'Total');
-               $event->sheet->setCellValue('A'.$columnPorcentagem, 'Porcentos');
+               $event->sheet->mergeCells('D'.$columnPorcentagem.':E'.$columnPorcentagem)->setCellValue('D'.$columnPorcentagem, ' Porcentagens=> ')
+               ->getStyle('D'.$columnPorcentagem.':E'.$columnPorcentagem)->applyFromArray($stylePerguntas);
 
+            /********************ESTILO TOTAIS/PORCENTAGEM********************/
+               
+               $event->sheet->getStyle('F'.$columnTotal.':G'.$columnTotal)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('H'.$columnTotal.':K'.$columnTotal)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('L'.$columnTotal.':N'.$columnTotal)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('O'.$columnTotal.':Q'.$columnTotal)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('R'.$columnTotal.':U'.$columnTotal)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('V'.$columnTotal.':Y'.$columnTotal)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('Z'.$columnTotal.':AC'.$columnTotal)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('AD'.$columnTotal.':AG'.$columnTotal)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('AH'.$columnTotal.':AK'.$columnTotal)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('AL'.$columnTotal.':AO'.$columnTotal)->applyFromArray($stylePerguntas);
+                 
+               $event->sheet->getStyle('F'.$columnPorcentagem.':G'.$columnPorcentagem)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('H'.$columnPorcentagem.':K'.$columnPorcentagem)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('L'.$columnPorcentagem.':N'.$columnPorcentagem)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('O'.$columnPorcentagem.':Q'.$columnPorcentagem)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('R'.$columnPorcentagem.':U'.$columnPorcentagem)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('V'.$columnPorcentagem.':Y'.$columnPorcentagem)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('Z'.$columnPorcentagem.':AC'.$columnPorcentagem)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('AD'.$columnPorcentagem.':AG'.$columnPorcentagem)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('AH'.$columnPorcentagem.':AK'.$columnPorcentagem)->applyFromArray($stylePerguntas);
+               $event->sheet->getStyle('AL'.$columnPorcentagem.':AO'.$columnPorcentagem)->applyFromArray($stylePerguntas);
              
-             /********************PRINTAR OS TOTAIS********************/
+            /****************************PRINTAR OS TOTAIS****************************/
               
               $letter_1 = range("F","Z");
               $A = "A";
@@ -416,32 +450,136 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
               
               foreach($letter_1 as $letra){
                $event->sheet->setCellValue($letra.$columnTotal, '=SUM('.$letra.'6:'.$letra.''.$size.')');
-                 foreach($letter_2 as $letra2){
+  
+               foreach($letter_2 as $letra2){
                     $event->sheet->setCellValue($A.$letra2.$columnTotal, '=SUM('.$A.$letra2.'6:'.$A.$letra2.''.$size.')');
                 }  
               }   
-             /***********************************************************/
-             $cem = 100;
-             $sim_1 = 0;
-             $nao_1 = 0;
-
+            /****************************PRINTAR AS PORCENTAGENS****************************/
+            
+             $sim_1 = 0; $nao_1 = 0; $muito_2 = 0; $bom_2 = 0; $regular_2 = 0;
+             $ruim_2 = 0; $Seguro_3 = 0; $poucoSeguro_3 = 0; $inseguro_3 = 0;
+             $excessiva_4 = 0; $razoavel_4 = 0; $insuficiente_4 = 0;
+             $muito_5 = 0; $bom_5 = 0; $regular_5 = 0; $ruim_5 = 0;
+             $muito_6 = 0; $bom_6 = 0; $regular_6 = 0; $ruim_6 = 0;
+             $muito_7 = 0; $bom_7 = 0; $regular_7 = 0; $ruim_7 = 0;
+             $muito_8 = 0; $bom_8 = 0; $regular_8 = 0; $ruim_8 = 0;
+             $muito_9 = 0; $bom_9 = 0; $regular_9 = 0; $ruim_9 = 0;
+             $muito_10 = 0; $bom_10 = 0; $regular_10 = 0; $ruim_10 = 0;
+             
+    
              foreach($this->arraySize as $avaliacao){
-                $sim_1+= $avaliacao->radioSim_1;
-                $nao_1+= $avaliacao->radioNao_1;
+
+                $sim_1 += $avaliacao->radioSim_1;
+                $nao_1 += $avaliacao->radioNao_1;
                 
-             }
-             //$event->sheet->setCellValue('F'.$columnPorcentagem, 4 * 100/ $totalPorc);
-            //$event->sheet->setCellValue('F'.$columnPorcentagem, '=SUM(F6:'. $size.')'.  $cem/$totalPorc);
-            $event->sheet->setCellValue('F'.$columnPorcentagem, $sim_1 * $cem / $totalPorc);
-            $event->sheet->setCellValue('G'.$columnPorcentagem, number_format(($nao_1 *  $cem / $totalPorc)), 2, '.', '');
+                $muito_2 += $avaliacao->radioMuito_2;
+                $bom_2+= $avaliacao->radiobom_2;
+                $regular_2 += $avaliacao->radioRegular_2;
+                $ruim_2 += $avaliacao->radioRuim_2;
 
-            
+                $Seguro_3 += $avaliacao->radioSeguro_3;
+                $poucoSeguro_3 += $avaliacao->radioPoucoSeguro_3;
+                $inseguro_3 += $avaliacao->radioInseguro_3;
+
+                $excessiva_4 += $avaliacao->radioExcessiva_4;
+                $razoavel_4  += $avaliacao->radioRazoavel_4;
+                $insuficiente_4  += $avaliacao->radioInsuficiente_4;
+
+                $muito_5 += $avaliacao->radioMuito_5;
+                $bom_5 += $avaliacao->radiobom_5;
+                $regular_5 += $avaliacao->radioRegular_5;
+                $ruim_5 += $avaliacao->radioRuim_5;
+                
+                $muito_6 += $avaliacao->radioMuito_6;
+                $bom_6 += $avaliacao->radiobom_6;
+                $regular_6 += $avaliacao->radioRegular_6;
+                $ruim_6 += $avaliacao->radioRuim_6;
+                
+                $muito_7 += $avaliacao->radioMuito_7;
+                $bom_7 += $avaliacao->radiobom_7;
+                $regular_7 += $avaliacao->radioRegular_7;
+                $ruim_7 += $avaliacao->radioRuim_7;
+                
+                $muito_8 += $avaliacao->radioMuito_8;
+                $bom_8 += $avaliacao->radiobom_8;
+                $regular_8 += $avaliacao->radioRegular_8;
+                $ruim_8 += $avaliacao->radioRuim_8;
+                
+                $muito_9 += $avaliacao->radioMuito_9;
+                $bom_9 += $avaliacao->radiobom_9;
+                $regular_9 += $avaliacao->radioRegular_9;
+                $ruim_9 += $avaliacao->radioRuim_9;
+
+                $muito_10 += $avaliacao->radioMuito_10;
+                $bom_10 += $avaliacao->radiobom_10;
+                $regular_10 += $avaliacao->radioRegular_10;
+                $ruim_10 += $avaliacao->radioRuim_10;
               
-            
-            },
-        ];
-    }
+             }
 
-   
+            $event->sheet->setCellValue('F'.$columnPorcentagem, formatPorcentagem($sim_1, $totalPorc));
+            $event->sheet->setCellValue('G'.$columnPorcentagem, formatPorcentagem($nao_1, $totalPorc));
+            $event->sheet->setCellValue('H'.$columnPorcentagem, formatPorcentagem($muito_2, $totalPorc));
+            $event->sheet->setCellValue('I'.$columnPorcentagem, formatPorcentagem($bom_2, $totalPorc));
+            $event->sheet->setCellValue('J'.$columnPorcentagem, formatPorcentagem($sim_1, $totalPorc));
+            $event->sheet->setCellValue('G'.$columnPorcentagem, formatPorcentagem($nao_1, $totalPorc));
+            $event->sheet->setCellValue('H'.$columnPorcentagem, formatPorcentagem($muito_2, $totalPorc));
+            $event->sheet->setCellValue('I'.$columnPorcentagem, formatPorcentagem($bom_2, $totalPorc));
+            $event->sheet->setCellValue('J'.$columnPorcentagem, formatPorcentagem($regular_2, $totalPorc));
+            $event->sheet->setCellValue('K'.$columnPorcentagem, formatPorcentagem($ruim_2, $totalPorc));
+            $event->sheet->setCellValue('L'.$columnPorcentagem, formatPorcentagem($Seguro_3, $totalPorc));
+            $event->sheet->setCellValue('M'.$columnPorcentagem, formatPorcentagem($poucoSeguro_3 , $totalPorc));
+            $event->sheet->setCellValue('N'.$columnPorcentagem, formatPorcentagem($inseguro_3, $totalPorc));
+            $event->sheet->setCellValue('O'.$columnPorcentagem, formatPorcentagem($excessiva_4, $totalPorc));
+            $event->sheet->setCellValue('P'.$columnPorcentagem, formatPorcentagem($razoavel_4   , $totalPorc));
+            $event->sheet->setCellValue('Q'.$columnPorcentagem, formatPorcentagem($insuficiente_4, $totalPorc));
+            $event->sheet->setCellValue('R'.$columnPorcentagem, formatPorcentagem($muito_5, $totalPorc));
+            $event->sheet->setCellValue('S'.$columnPorcentagem, formatPorcentagem($bom_5, $totalPorc));
+            $event->sheet->setCellValue('T'.$columnPorcentagem, formatPorcentagem($regular_5   , $totalPorc));
+            $event->sheet->setCellValue('U'.$columnPorcentagem, formatPorcentagem($ruim_5, $totalPorc));
+            $event->sheet->setCellValue('V'.$columnPorcentagem, formatPorcentagem($muito_6, $totalPorc));
+            $event->sheet->setCellValue('W'.$columnPorcentagem, formatPorcentagem($bom_6, $totalPorc));
+            $event->sheet->setCellValue('X'.$columnPorcentagem, formatPorcentagem($regular_6   , $totalPorc));
+            $event->sheet->setCellValue('Y'.$columnPorcentagem, formatPorcentagem($ruim_6, $totalPorc));
+            $event->sheet->setCellValue('Z'.$columnPorcentagem, formatPorcentagem($muito_7, $totalPorc));
+            $event->sheet->setCellValue('AA'.$columnPorcentagem, formatPorcentagem($bom_7, $totalPorc));
+            $event->sheet->setCellValue('AB'.$columnPorcentagem, formatPorcentagem($regular_7   , $totalPorc));
+            $event->sheet->setCellValue('AC'.$columnPorcentagem, formatPorcentagem($ruim_7, $totalPorc));
+            $event->sheet->setCellValue('AD'.$columnPorcentagem, formatPorcentagem($muito_8, $totalPorc));
+            $event->sheet->setCellValue('AE'.$columnPorcentagem, formatPorcentagem($bom_8, $totalPorc));
+            $event->sheet->setCellValue('AF'.$columnPorcentagem, formatPorcentagem($regular_8   , $totalPorc));
+            $event->sheet->setCellValue('AG'.$columnPorcentagem, formatPorcentagem($ruim_8, $totalPorc));
+            $event->sheet->setCellValue('AH'.$columnPorcentagem, formatPorcentagem($muito_9, $totalPorc));
+            $event->sheet->setCellValue('AI'.$columnPorcentagem, formatPorcentagem($bom_9, $totalPorc));
+            $event->sheet->setCellValue('AJ'.$columnPorcentagem, formatPorcentagem($regular_9   , $totalPorc));
+            $event->sheet->setCellValue('AK'.$columnPorcentagem, formatPorcentagem($ruim_9, $totalPorc));
+            $event->sheet->setCellValue('AL'.$columnPorcentagem, formatPorcentagem($muito_10, $totalPorc));
+            $event->sheet->setCellValue('AM'.$columnPorcentagem, formatPorcentagem($bom_10, $totalPorc));
+            $event->sheet->setCellValue('AN'.$columnPorcentagem, formatPorcentagem($regular_10   , $totalPorc));
+            $event->sheet->setCellValue('AO'.$columnPorcentagem, formatPorcentagem($ruim_10, $totalPorc));
+          
+
+        },
+        ];
+
+       
+    }
+    
 }
+
+
+ function formatPorcentagem($valor = 0, $total = 0){
+            
+    $cem = 100;
+    $porc = 0;
+    if($total > 0){
+    $porc = ($valor *  $cem )/ $total;
+    $porc =  number_format($porc, 2) .'%';
+
+    }
+    return $porc;
+
+}
+
 

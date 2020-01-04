@@ -11,8 +11,7 @@
             <thead>
               <tr>
                 <th>Código</th>
-                <th>Descrição</th>
-                <th>UF</th>
+                <th>Cidade/UF</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -90,10 +89,9 @@ $.ajaxSetup({
 
       var  linha = "<tr>"+
         "<td>"+c.id+"</td>"+
-        "<td>"+c.descricao_cidade+"</td>"+
+        "<td>"+c.descricao_cidade + "/" + c.descricao_uf+"</td>"+
         //Funciona correto: 
-        //"<td>"+c.uf_id+"</td>"+
-        "<td>"+c.descricao_uf+"</td>"+
+       // "<td>"+c.descricao_uf+"</td>"+
         "<td>"+
           '<button class="btn btn-xs btn-primary botoes" onclick="editar('+c.id+')">Editar</button>'+
           '<button class="btn btn-xs btn-danger botoes" onclick="remover('+c.id+')">Apagar</button>'+
@@ -147,26 +145,26 @@ $.ajaxSetup({
       $.getJSON('/api/cidades' , function(cidades){
 
         for( i = 0; i < cidades.length; i++){
-      
-       linha = montarLinha(cidades[i])
-       $('#tabelaCidades>tbody').append(linha);
-      }
+
+          if(cidades[i].id !== 1){
+            console.log(cidades[i].id);
+            linha = montarLinha(cidades[i])
+            $('#tabelaCidades>tbody').append(linha);
+      }}
       });
     }
 
 function listarUfs(){
 
 $.getJSON('/api/ufs' , function(data){
-
+  
   for( i = 0; i < data.length; i++){
-   opcao = '<option  select  value="'+ data[i].id +'">'+ data[i].descricao_uf+ '</option>';
+     opcao = '<option  select  value="'+ data[i].id +'">'+data[i].descricao_uf + '</option>';
    $('#uf_id').append(opcao);
 }
 });
 }
 /*******CADASTRAR CIDADE**********/
-
-
 
 function cadastrarCidade(){
 c = {
@@ -200,11 +198,10 @@ $.ajax({
           url: "/api/cidades/"+ c.id,
           data: c,
           context: this,
+
           success: function(data){
-
+          
             c = JSON.parse(data);
-            console.log('TESTES',c);
-
             linhas = $('#tabelaCidades>tbody>tr');
             e = linhas.filter(function(i, e){
               return (e.cells[0].textContent == c.id);
@@ -212,11 +209,18 @@ $.ajax({
             if(e){
              
               e[0].cells[0].textContent = c.id;
-              e[0].cells[1].textContent = c.descricao_cidade;
-              e[0].cells[2].textContent = c.descricao_uf
+              e[0].cells[1].textContent = c.descricao_cidade +"/"+ c.descricao_uf;
+             // e[0].cells[2].textContent = c.descricao_uf;
               }
-          },
+             // $.alert('Message here', {
 
+
+          alert('Cidade', {
+          
+            type:'sucess'
+
+          });  
+          },
           error: function(error){
           console.log(error);
           }

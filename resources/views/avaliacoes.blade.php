@@ -13,7 +13,7 @@
                 <th>Nome</th>
                 <th>Cpf</th>
                 <th>Cidade/UF</th>
-                <th>Agente</th>
+                <th>Profissional</th>
                 <th>Resumo</th>
               </tr>
             </thead>
@@ -137,7 +137,6 @@
           <label class="form-check-label">Ruim</label><br>
       </div>
 
-
       <h1>Equipe de apoio</h1><br>
 
       <h3>Conhecimento do conteúdo:</h3>  
@@ -182,8 +181,6 @@
 
    </div>
 
-
-
 @endsection
 
 @section('javascript')
@@ -194,22 +191,19 @@ $.ajaxSetup({
   'X-CSRF-TOKEN':"{{csrf_token()}}"
   }
 });
-
   
     function montarLinha(a) {
-      console.log("MOntar:"+ a.tipo_profissional);
+      
       var  linha = "<tr>"+
         "<td>"+a.descricao_profissional+"</td>"+
-        "<td>"+a.cpf_profissional+"</td>"+
-        "<td>"+a.descricao_cidade+ "/" + a.descricao_uf +"</td>"+
+        "<td>"+imprimeCPF(a.cpf_profissional)+"</td>"+
+        "<td>"+a.descricao_cidade +"/"+ a.descricao_uf +"</td>"+
         "<td>"+a.descricao_tipo_profissional+"</td>"+
+      
         "<td>"+
           '<button class="btn btn-xs btn-primary botoes" onclick="exibir('+a.id+')">Resumo</button>'+
- 
-          "</td>"+
+        "</td>"+
         "</tr>";
-
-        
 
         return linha;
     }
@@ -219,8 +213,7 @@ $.ajaxSetup({
     function exibir(id){
         
         $.getJSON('/api/avaliacoes/'+id, function(data){
-        
-                  
+               
         checkedFalse();
           
          if(data[0].radioSim_1 == 1){$("#radioSim_1").attr('checked', true);}
@@ -259,7 +252,6 @@ $.ajaxSetup({
          if(data[0].radioRegular_8 == 1){$("#radioRegular_8").attr('checked', true);}
          if(data[0].radioRuim_8 == 1){$("#radioRuim_8").attr('checked', true);}
 
-
          if(data[0].radioMuito_9 == 1){$("#radioMuito_9").attr('checked', true);}
          if(data[0].radiobom_9 == 1){$("#radiobom_9").attr('checked', true);}
          if(data[0].radioRegular_9 == 1){$("#radioRegular_9").attr('checked', true);}
@@ -270,53 +262,43 @@ $.ajaxSetup({
          if(data[0].radioRegular_10 == 1){$("#radioRegular_10").attr('checked', true);}
          if(data[0].radioRuim_10 == 1){$("#radioRuim_10").attr('checked', true);}
         
-        // if(data[0].descricao == 1){$("#descricao").attr('checked', true);}
          if(data[0].descricao_profissional == 1){$("#nome_agente").attr('checked', true);}
          if(data[0].tipo_profissional == 1){$("#tipo_agente").attr('checked', true);}
 
          if(data[0].descricao != "")$('#sugestoes_11').text(data[0].descricao);
 
-
         $('#dlgAvaliacoes').modal('show');
         });
        }
 
-
-/***************TESTES******************/
+        /***************TESTES******************/
 
 
       /************************************LISTAR************************************/
       
        function listarAvaliacoes (){
 
-      $.getJSON('/api/avaliacoes', function(avaliacoes){
- 
-        for( i = 0; i < avaliacoes.length; i++){
-        console.log(avaliacoes);
-        linha = montarLinha(avaliacoes[i])
-       $('#tabelaAvalicoes>tbody').append(linha);
-      }
+       $.getJSON('/api/avaliacoes', function(avaliacoes){
+         for( i = 0; i < avaliacoes.length; i++){
+           if(avaliacoes[i].cidade_id !== 1){
+           linha = montarLinha(avaliacoes[i])
+           $('#tabelaAvalicoes>tbody').append(linha);
+      }}
       });
     }
-
-    $barra = "/";
 
     function listarCidades(){
 
     $.getJSON('/api/cidades' , function(data){
-      
      
-
       for( i = 0; i < data.length; i++){
-        
-      opcao = '<option  select  value="'+ data[i].id +'">'+ data[i].descricao_cidade+ $barra + data[i].descricao_uf + '</option>';
-      
-      $('#id_cidade').append(opcao);
+        if(data[i].id !== 1){
+         opcao = '<option  select  value="'+ data[i].id +'">'+ data[i].descricao_cidade + data[i].descricao_uf + '</option>';
+         $('#id_cidade').append(opcao);
+        }
       }
       });
       }
-
-
 
 function checkedFalse(){
           
@@ -356,7 +338,6 @@ function checkedFalse(){
           $("#radioRegular_8").attr('checked', false);
           $("#radioRuim_8").attr('checked', false);
 
-
           $("#radioMuito_9").attr('checked', false);
           $("#radiobom_9").attr('checked', false);
           $("#radioRegular_9").attr('checked', false);
@@ -366,24 +347,17 @@ function checkedFalse(){
           $("#radiobom_10").attr('checked', false);
           $("#radioRegular_10").attr('checked', false);
           $("#radioRuim_10").attr('checked', false);
-        
          
-        
         }
 
  /************************************UTILS************************************/
 
- function tipoAgente(tipo){
-    
-    if(tipo === 1){
-      return "ACS";
-    }else{
-      return "ACE";
+   function imprimeCPF($CPF) {
+        return($CPF.substring(0, 3) + "." + $CPF.substring(3, 6) + "." +
+                $CPF.substring(6, 9) + "-" + $CPF.substring(9, 11));
     }
-   }
 
    /***********************************GERAR EXCEL************************************/
-
 
   function gerarExcelPostAvaliacoes() {
 
@@ -411,7 +385,6 @@ function checkedFalse(){
         });
        
 }
-
   
    $("#formAvaliacoes").submit(function (event) {
    event.preventDefault();

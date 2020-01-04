@@ -159,7 +159,7 @@ class ControllerCidade extends Controller
         return response('Cidade não encontrada!!!', 404);
     }
 
-/*****************APIS EXTERNAS*************/
+/*****************APIS EXTERNAS INTEROPERAVEIS*****************/
 
 public function indexAPIAndroidCidades()
 {

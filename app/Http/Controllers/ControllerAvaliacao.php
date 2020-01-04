@@ -120,8 +120,10 @@ class ControllerAvaliacao extends Controller
                 'radioRuim_10' => $request->input('radioRuim_10'),
 
                 'descricao' => $request->input('descricao'),
-                'cidade_id' => $request->input('id_cidade'),
+                'cidade_id' => $request->input('cidade_id'),
+
                 /*******Mudanças*********/
+                
                 'descricao_profissional' => $request->input('descricao_profissional'),
                 'descricao_tipo_profissional' => $request->input('descricao_tipo_profissional'),
                 'tipo_profissional' => $request->input('tipo_profissional'),

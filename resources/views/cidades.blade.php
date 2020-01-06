@@ -164,7 +164,7 @@ $.getJSON('/api/ufs' , function(data){
 }
 });
 }
-/*******CADASTRAR CIDADE**********/
+/**********CADASTRAR CIDADE**********/
 
 function cadastrarCidade(){
 c = {

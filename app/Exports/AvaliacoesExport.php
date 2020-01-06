@@ -34,9 +34,9 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
     protected $arraySize = [];
 
     
-    public function __construct($id_city)
+    public function __construct(Avaliacao $a)
     {
-        $this->id_cidade = $id_city;
+        $this->id_cidade = $a->cidade_id;
         
     }
     
@@ -69,7 +69,8 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
      'avaliacoes.radioMuito_8','avaliacoes.radiobom_8','avaliacoes.radioRegular_8','avaliacoes.radioRuim_8',
      'avaliacoes.radioMuito_9','avaliacoes.radiobom_9','avaliacoes.radioRegular_9','avaliacoes.radioRuim_9',
      'avaliacoes.radioMuito_10','avaliacoes.radiobom_10','avaliacoes.radioRegular_10','avaliacoes.radioRuim_10',
-     'avaliacoes.descricao', 'avaliacoes.datahora', 'avaliacoes.updated_at as avaliacoes_updated_at')
+     'avaliacoes.descricao', DB::raw('DATE_FORMAT(avaliacoes.datahora, \'%d/%m/%Y %H:%i:%S\') AS datahora') ,
+     'avaliacoes.updated_at as avaliacoes_updated_at')
      ->orderBy('avaliacoes.descricao_profissional', 'asc')
      ->where($conditions)
      ->get();
@@ -78,7 +79,6 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
      
      return $arrayAvaliacoes;
  }
-
 
  public function headings(): array
  {

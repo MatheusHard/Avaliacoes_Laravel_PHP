@@ -117,9 +117,11 @@ class ControllerExcel extends Controller
     
     public function exportPostAvaliacoes(Request $request)
     {
-
-        $arquivo = new AvaliacoesExport($request->id_cidade);
-        return Excel::download($arquivo, 'avaliacoes.xlsx');
+        $a = new Avaliacao();
+        $a->cidade_id = $request->id_cidade;
+       // $arquivo = new AvaliacoesExport($request->id_cidade);
+       $arquivo = new AvaliacoesExport($a); 
+       return Excel::download($arquivo, 'avaliacoes.xlsx');
 
     }
 

@@ -50,8 +50,10 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
          
         $conditions=[];
 
-        if(isset($this->id_cidade)){
+        if(isset($this->id_cidade) && $this->id_cidade > 0){
             $conditions[]=['avaliacoes.cidade_id', $this->id_cidade];
+        }else{
+            $conditions[] = ['avaliacoes.cidade_id',  '>' , $this->id_cidade];
         }
     
      $this->a = new Avaliacao();
@@ -72,6 +74,7 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
      'avaliacoes.descricao', DB::raw('DATE_FORMAT(avaliacoes.datahora, \'%d/%m/%Y %H:%i:%S\') AS datahora') ,
      'avaliacoes.updated_at as avaliacoes_updated_at')
      ->orderBy('avaliacoes.descricao_profissional', 'asc')
+     
      ->where($conditions)
      ->get();
 
@@ -274,7 +277,7 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
               
                 
                 $cellRangeTitulo ='A1:AQ1';
-                $cellRangeSubTitulo1 ='A3:E3';
+                $cellRangeSubTitulo1 = 'A3:E3';
                 $cellRangeSubTitulo2 = 'F3:G3';
                 $cellRangeSubTitulo3 = 'G3:Q3';
                 $cellRangeSubTitulo4 = 'R3:AC3';

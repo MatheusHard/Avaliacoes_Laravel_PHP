@@ -302,6 +302,17 @@ $.ajaxSetup({
       });
       }
 
+/*function listarProfissoes(){
+     
+      arrayProfissoes = ["TODOS", "ACS", "ACE", "ENFERMEIRO(A)","GESTOR MUNICIPAL"];
+      for( i = 0; i < arrayProfissoes.length; i++){
+        if(data[i].id !== 1){
+         opcao = '<option select value="'+ arrayProfissoes[i] +'">'+ data[i].descricao_cidade + '</option>';
+         $('#id_cidade').append(opcao);
+        }
+      }
+     
+     }*/
 function checkedFalse(){
           
           $("#radioSim_1").attr('checked', false);

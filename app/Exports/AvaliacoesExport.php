@@ -32,11 +32,12 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
     protected $id_cidade;
     protected $stringBuilder;
     protected $arraySize = [];
-
+    protected $avaliacao;
     
     public function __construct(Avaliacao $a)
     {
-        $this->id_cidade = $a->cidade_id;
+       // $this->id_cidade = $a->cidade_id;
+       $this->avaliacao = $a;
         
     }
     
@@ -50,13 +51,20 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
          
         $conditions=[];
 
-        if(isset($this->id_cidade) && $this->id_cidade > 0){
+        /*if(isset($this->id_cidade) && $this->id_cidade > 0){
             $conditions[]=['avaliacoes.cidade_id', $this->id_cidade];
         }else{
             $conditions[] = ['avaliacoes.cidade_id',  '>' , $this->id_cidade];
+        }*/
+
+        if(isset($this->avaliacao) && $this->avaliacao->cidade_id > 0){
+            $conditions[]=['avaliacoes.cidade_id', $this->avaliacao->cidade_id];
+        }else{
+            $conditions[] = ['avaliacoes.cidade_id',  '>' ,$this->avaliacao->cidade_id];
         }
     
-     $this->a = new Avaliacao();
+        $conditions[] = ['avaliacoes.tipo_profissional',  4];
+
 
      $arrayAvaliacoes = DB::table('avaliacoes')
      ->join('cidades', 'avaliacoes.cidade_id', '=', 'cidades.id')

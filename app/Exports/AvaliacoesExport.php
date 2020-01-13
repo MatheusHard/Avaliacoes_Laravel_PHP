@@ -38,8 +38,8 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
     {
        // $this->id_cidade = $a->cidade_id;
        $this->avaliacao = $a;
-        
     }
+
     
    
    
@@ -48,24 +48,22 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
     * @return \Illuminate\Support\Collection
     */
     public function collection(){
-         
-        $conditions=[];
 
-        /*if(isset($this->id_cidade) && $this->id_cidade > 0){
-            $conditions[]=['avaliacoes.cidade_id', $this->id_cidade];
-        }else{
-            $conditions[] = ['avaliacoes.cidade_id',  '>' , $this->id_cidade];
-        }*/
+
+        $conditions=[];
 
         if(isset($this->avaliacao) && $this->avaliacao->cidade_id > 0){
             $conditions[]=['avaliacoes.cidade_id', $this->avaliacao->cidade_id];
         }else{
-            $conditions[] = ['avaliacoes.cidade_id',  '>' ,$this->avaliacao->cidade_id];
+            $conditions[] = ['avaliacoes.cidade_id', '>',$this->avaliacao->cidade_id];
         }
+        if(isset($this->avaliacao) && $this->avaliacao->tipo_profissional > 0){
+            $conditions[] = ['avaliacoes.tipo_profissional', $this->avaliacao->tipo_profissional];
+        }else{
+            $conditions[] = ['avaliacoes.tipo_profissional', '>' ,$this->avaliacao->tipo_profissional];
+        }
+        
     
-        $conditions[] = ['avaliacoes.tipo_profissional',  4];
-
-
      $arrayAvaliacoes = DB::table('avaliacoes')
      ->join('cidades', 'avaliacoes.cidade_id', '=', 'cidades.id')
      ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
@@ -82,7 +80,6 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
      'avaliacoes.descricao', DB::raw('DATE_FORMAT(avaliacoes.datahora, \'%d/%m/%Y %H:%i:%S\') AS datahora') ,
      'avaliacoes.updated_at as avaliacoes_updated_at')
      ->orderBy('avaliacoes.descricao_profissional', 'asc')
-     
      ->where($conditions)
      ->get();
 

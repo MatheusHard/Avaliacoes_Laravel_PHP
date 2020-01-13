@@ -38,7 +38,15 @@
                   </div>
               </div>
 
-           
+              <div class="form-group">
+                <label for="profissionais" class="control-label">Profissionais</label>
+                  <div class="input-group">
+                     <select class="form-control" id="tipo_profissional">
+                 
+                      </select>
+                    </div>
+                </div>
+            
              <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Salvar</button>
           </div>
@@ -302,17 +310,24 @@ $.ajaxSetup({
       });
       }
 
-/*function listarProfissoes(){
+function listarProfissoes(){
      
-      arrayProfissoes = ["TODOS", "ACS", "ACE", "ENFERMEIRO(A)","GESTOR MUNICIPAL"];
-      for( i = 0; i < arrayProfissoes.length; i++){
-        if(data[i].id !== 1){
-         opcao = '<option select value="'+ arrayProfissoes[i] +'">'+ data[i].descricao_cidade + '</option>';
-         $('#id_cidade').append(opcao);
+      $arrayProfissoes = [{"tipo_profissional": 1, "descricao_profissional": "ACS"}, 
+                         {"tipo_profissional": 2, "descricao_profissional": "ACE"}, 
+                         {"tipo_profissional": 3, "descricao_profissional": "ENFERMEIRO(A)"},
+                         {"tipo_profissional": 4, "descricao_profissional": "GESTOR MUNICIPAL"}];
+     
+      opcao = '<option select value="'+ 2 +'">'+ "TOTAL" + '</option>';
+      $('#tipo_profissional').append(opcao);
+     
+      for(i = 0; i < $arrayProfissoes.length; i++){
+        if($arrayProfissoes[i].id !== 0){
+         opcao = '<option select value="'+ $arrayProfissoes[i].tipo_profissional +'">'+ $arrayProfissoes[i].descricao_profissional + '</option>';
+         $('#tipo_profissional').append(opcao);
         }
       }
+}
      
-     }*/
 function checkedFalse(){
           
           $("#radioSim_1").attr('checked', false);
@@ -376,6 +391,7 @@ function checkedFalse(){
 
     a = {
         id_cidade: $("#id_cidade").val(),
+        tipo_profissional: $("#tipo_profissional").val()
         };
       $.ajax({
           type: "POST",
@@ -411,6 +427,7 @@ function checkedFalse(){
     $(function () {
       listarCidades();
       listarAvaliacoes();
+      listarProfissoes();
       })
     </script>
 @endsection

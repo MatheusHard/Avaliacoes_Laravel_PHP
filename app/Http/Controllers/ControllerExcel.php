@@ -119,6 +119,8 @@ class ControllerExcel extends Controller
     {
         $a = new Avaliacao();
         $a->cidade_id = $request->id_cidade;
+        $a->tipo_profissional = $request->tipo_profissional;
+         
        // $arquivo = new AvaliacoesExport($request->id_cidade);
        $arquivo = new AvaliacoesExport($a); 
        return Excel::download($arquivo, 'avaliacoes.xlsx');

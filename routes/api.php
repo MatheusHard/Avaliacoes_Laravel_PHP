@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use App\Exports\AvaliacoesExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Route;
 
 
 /*
@@ -43,5 +45,9 @@ Route::post('/excel/avaliacoes', function (Request $request) {
     return Excel::download(new AvaliacoesExport($request->id_cidade), 'avaliacoes.xlsx');
 
 });
+
+//Relizado o import pra funcionar:
+//use Illuminate\Support\Facades\Route;
+
 
 

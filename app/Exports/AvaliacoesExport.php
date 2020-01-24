@@ -29,21 +29,15 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
 {
     use Exportable, RegistersEventListeners;
 
-    protected $id_cidade;
-    protected $stringBuilder;
     protected $arraySize = [];
     protected $avaliacao;
     
     public function __construct(Avaliacao $a)
     {
-       // $this->id_cidade = $a->cidade_id;
        $this->avaliacao = $a;
     }
 
-    
-   
-   
-
+  
     /**
     * @return \Illuminate\Support\Collection
     */
@@ -369,13 +363,8 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
 
                                $event->sheet->setCellValue('AQ4', '#')
                                ->getStyle($cellRangePerguntas13)->applyFromArray($stylePerguntas);
-                                
-                             
-                               
-
+             
                 },
-
-
 
             AfterSheet::class => function(AfterSheet $event) use ($stylePerguntas, $styleHeaders2) {
               
@@ -393,7 +382,6 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
                 $cellRangeHeardes12 = 'AP5';
                 $cellRangeHeardes13 = 'AQ5';
 
-
               $event->sheet->getStyle($cellRangeHeardes1)->applyFromArray($stylePerguntas);
               $event->sheet->getStyle($cellRangeHeardes2)->applyFromArray($stylePerguntas);
               $event->sheet->getStyle($cellRangeHeardes3)->applyFromArray($stylePerguntas);
@@ -407,9 +395,6 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
               $event->sheet->getStyle($cellRangeHeardes11)->applyFromArray($stylePerguntas);
               $event->sheet->getStyle($cellRangeHeardes12)->applyFromArray($stylePerguntas);
               $event->sheet->getStyle($cellRangeHeardes13)->applyFromArray($stylePerguntas);
-
-
-              
   
             /****CALCULAR CELULAS ONDE OS TOTAIS e PORCENTAGENS DEVEM FICAR****/
 
@@ -418,7 +403,6 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
                $size = (6 + count($this->arraySize));
                $columnTotal = ($inicioResults + count($this->arraySize));
                $columnPorcentagem = $columnTotal + 1;
-               
               
                $event->sheet->mergeCells('D'.$columnTotal.':E'.$columnTotal)->setCellValue('D'.$columnTotal, ' Totais-> ')
                ->getStyle('D'.$columnTotal.':E'.$columnTotal)->applyFromArray($stylePerguntas);
@@ -474,7 +458,6 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
              $muito_8 = 0; $bom_8 = 0; $regular_8 = 0; $ruim_8 = 0;
              $muito_9 = 0; $bom_9 = 0; $regular_9 = 0; $ruim_9 = 0;
              $muito_10 = 0; $bom_10 = 0; $regular_10 = 0; $ruim_10 = 0;
-             
     
              foreach($this->arraySize as $avaliacao){
 
@@ -566,16 +549,11 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
             $event->sheet->setCellValue('AM'.$columnPorcentagem, formatPorcentagem($bom_10, $totalPorc));
             $event->sheet->setCellValue('AN'.$columnPorcentagem, formatPorcentagem($regular_10   , $totalPorc));
             $event->sheet->setCellValue('AO'.$columnPorcentagem, formatPorcentagem($ruim_10, $totalPorc));
-          
 
         },
         ];
-
-       
     }
-    
 }
-
 
  function formatPorcentagem($valor = 0, $total = 0){
             
@@ -586,8 +564,7 @@ class AvaliacoesExport implements FromCollection, WithHeadings,  ShouldAutoSize,
     $porc =  number_format($porc, 2) .'%';
 
     }
-    return $porc;
-
+   return $porc;
 }
 
 

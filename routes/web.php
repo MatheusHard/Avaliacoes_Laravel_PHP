@@ -1,6 +1,7 @@
 <?php
 
-use App\Exports\CidadesExport;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,8 +32,8 @@ Route::get('avaliacoes/mostrar/{id}', 'ControllerAvaliacao@show');
 
 /**************************ROTAS EXCEL**************************/
 
-Route::get('/excel/cidades', 'ControllerExcel@exportCidades');
-//Route::get('/excel/avaliacoes/{id}', 'ControllerExcel@exportAvaliacoes');
+//Route::get('/excel/cidades', 'ControllerExcel@exportCidades');
+Route::post('/excel/cidades', 'ControllerExcel@exportPostCidades');
 Route::post('/excel/avaliacoes', 'ControllerExcel@exportPostAvaliacoes');
 
 

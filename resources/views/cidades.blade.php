@@ -22,7 +22,33 @@
     </div>
     <div class="card-footer">
         <button class="btn btn-sm btn-primary" role="button" onclick="novaCidade()">Nova Cidade</button>
-        <a href="{{asset('/excel/cidades')}}" class="btn btn-sm btn-success" role="button">Gerar Excel</a>
+
+<!--*************NOVO EXCEL*************---->
+
+<div class="card-footer">
+<div class="float-left">
+
+<form class="form-horizontal" id="formCidadesExcel">
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="estados" class="control-label">UFS</label>
+        <div class="input-group">
+           <select class="form-control" id="uf_id_excel">
+      
+            </select>
+          </div>
+      </div>
+     <div class="modal-footer">
+      <button type="submit" class="btn btn-success">Excel</button>
+    </div>
+</div>
+</form>
+</div>
+</div>
+
+<!--***************-->
+
+      <!--  <a href="{{asset('/excel/cidades')}}" class="btn btn-sm btn-success" role="button">Gerar Excel</a>-->
     </div>
 </div>
 <div class="modal" tabindex="-1" role="dialog" id="dlgCidades">
@@ -54,6 +80,7 @@
       </div>
     </div>
   <div class="modal-footer">
+
     <button type="submit" class="btn btn-primary">Salvar</button>
     <button type="cancel" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
   </div>
@@ -157,13 +184,31 @@ $.ajaxSetup({
 function listarUfs(){
 
 $.getJSON('/api/ufs' , function(data){
-  
-  for( i = 0; i < data.length; i++){
-     opcao = '<option  select  value="'+ data[i].id +'">'+data[i].descricao_uf + '</option>';
-   $('#uf_id').append(opcao);
+     opcao = '<option select value="'+ 0 +'">'+ "escolha UF" + '</option>';
+     $('#uf_id').append(opcao);
+    for( i = 0; i < data.length; i++){
+    if(data[i].id !== 1){
+     opcao = '<option select value="'+ data[i].id +'">'+data[i].descricao_uf + '</option>';
+     $('#uf_id').append(opcao);
+     }  
+   }
+  });
 }
+
+function listarUfsExcel(){
+
+$.getJSON('/api/ufs' , function(data){
+     opcao = '<option select value="'+ 0 +'">'+"TOTAL"+'</option>';
+     $('#uf_id_excel').append(opcao);
+  for( i = 0; i < data.length; i++){
+    if(data[i].id !== 1){
+     opcao = '<option select value="'+ data[i].id +'">'+data[i].descricao_uf+'</option>';
+     $('#uf_id_excel').append(opcao);
+}}
 });
 }
+
+
 /**********CADASTRAR CIDADE**********/
 
 function cadastrarCidade(){
@@ -173,8 +218,7 @@ c = {
 
 };
 $.post('/api/cidades' , c, function(data){
-  //Refresh na página:
-  //listarCidades ();
+  
   console.log(data);
   city = JSON.parse(data);
   console.log(city);
@@ -184,6 +228,7 @@ $.post('/api/cidades' , c, function(data){
 
 $("#dlgCidades").modal('hide');
 }
+
 /**********SALVAR CIDADE EDITADA**********/
 
 function salvarCidade() {
@@ -191,7 +236,6 @@ function salvarCidade() {
     id: $("#id").val(),
     descricao_cidade: $("#descricao_cidade").val(),
     uf_id: $("#uf_id").val()
-
 };
 $.ajax({
           type: "PUT",
@@ -200,50 +244,73 @@ $.ajax({
           context: this,
 
           success: function(data){
-          
             c = JSON.parse(data);
             linhas = $('#tabelaCidades>tbody>tr');
             e = linhas.filter(function(i, e){
               return (e.cells[0].textContent == c.id);
             });   
             if(e){
-             
               e[0].cells[0].textContent = c.id;
               e[0].cells[1].textContent = c.descricao_cidade +"/"+ c.descricao_uf;
-             // e[0].cells[2].textContent = c.descricao_uf;
               }
-             // $.alert('Message here', {
-
-
-          alert('Cidade', {
-          
+            alert('Cidade', {
             type:'sucess'
-
-          });  
+           });  
           },
           error: function(error){
           console.log(error);
-          }
-        });
-       
-
+    }
+  });
 }
+
+/************GERAR EXCEL************/
+
+function gerarExcelPostCidades() {
+  c = {
+    uf_id: $("#uf_id_excel").val()
+    };
+   $.ajax({
+      type: "POST",
+      url: "/excel/cidades",
+      data: c,
+      context: this,
+      xhrFields: {
+        responseType: 'blob'
+      },
+      success: function (blob) {
+            console.log(blob.size);
+            var link=document.createElement('a');
+            link.href=window.URL.createObjectURL(blob);
+            link.download="Cidades_" + new Date(); + ".xlsx";
+            link.click();
+          },
+      error: function(error){
+      console.log(error);
+      }
+    });
+  }
 
 $("#formCidades").submit(function (event) {
   event.preventDefault();
-  
+ 
   if($("#id").val() != ''){
     salvarCidade();
   }else{
     cadastrarCidade();
   }
+  
   $("#dlgCidades").modal('hide');
 });
 
+$("#formCidadesExcel").submit(function (event) {
+   event.preventDefault();
+   gerarExcelPostCidades();
+ 
+});
 
     $(function () {
-
       listarUfs();
+      listarUfsExcel();
       listarCidades();
       })
     </script>

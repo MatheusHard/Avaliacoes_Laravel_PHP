@@ -106,6 +106,24 @@ class ControllerExcel extends Controller
         return Excel::download(new CidadesExport, 'cidades.xlsx');
     
     }
+
+    
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    
+    public function exportPostCidades(Request $request)
+    {
+        $c = new Cidade();
+        $c->uf_id = $request->uf_id;
+        $arquivo = new CidadesExport($c); 
+        return Excel::download($arquivo, 'cidades.xlsx');
+    }
+
+  
   
     
     /**

@@ -313,11 +313,11 @@ $.ajaxSetup({
 function listarProfissoes(){
      
       $arrayProfissoes = [{"tipo_profissional": 1, "descricao_profissional": "ACS"}, 
-                         {"tipo_profissional": 2, "descricao_profissional": "ACE"}, 
-                         {"tipo_profissional": 3, "descricao_profissional": "ENFERMEIRO(A)"},
-                         {"tipo_profissional": 4, "descricao_profissional": "GESTOR MUNICIPAL"}];
+                          {"tipo_profissional": 2, "descricao_profissional": "ACE"}, 
+                          {"tipo_profissional": 3, "descricao_profissional": "ENFERMEIRO(A)"},
+                          {"tipo_profissional": 4, "descricao_profissional": "GESTOR MUNICIPAL"}];
      
-      opcao = '<option select value="'+ 2 +'">'+ "TOTAL" + '</option>';
+      opcao = '<option select value="'+ 0 +'">'+ "TOTAL" + '</option>';
       $('#tipo_profissional').append(opcao);
      
       for(i = 0; i < $arrayProfissoes.length; i++){
@@ -411,13 +411,11 @@ function checkedFalse(){
           error: function(error){
           console.log(error);
           }
-        });
-       
-}
+    });
+ }
   
    $("#formAvaliacoes").submit(function (event) {
    event.preventDefault();
-
    gerarExcelPostAvaliacoes();
   
 });

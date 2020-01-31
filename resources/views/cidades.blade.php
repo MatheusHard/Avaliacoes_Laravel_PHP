@@ -277,11 +277,14 @@ function gerarExcelPostCidades() {
       xhrFields: {
         responseType: 'blob'
       },
+ 
       success: function (blob) {
+
+        
             console.log(blob.size);
             var link=document.createElement('a');
             link.href=window.URL.createObjectURL(blob);
-            link.download="Cidades_" + new Date(); + ".xlsx";
+            link.download="Cidades_" + dataHora(); + ".xlsx";
             link.click();
           },
       error: function(error){
@@ -308,6 +311,18 @@ $("#formCidadesExcel").submit(function (event) {
  
 });
 
+/*********UTILS**********/
+
+function dataHora(){
+        
+        var d = new Date();
+        var datestring = d.getDate()  + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " " +
+        d.getHours() + ":" + d.getMinutes();
+        return datestring;
+        }
+
+/*******AUTO LOAD*******/
+    
     $(function () {
       listarUfs();
       listarUfsExcel();

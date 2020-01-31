@@ -29,20 +29,17 @@ class CidadesExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
     }
 
     /**
-    * @return \Illuminate\Support\Collection
+    * @return \Illuminate\   \Collection
     */
    public function collection()
     {
         $conditions=[];
 
-        
-
         if(isset($this->cidade) && $this->cidade->uf_id > 0){
             $conditions[]=['cidades.uf_id', $this->cidade->uf_id];
         }else{
-         $conditions[] = ['cidades.uf_id', '>',$this->cidade->uf_id];
+         $conditions[] = ['cidades.uf_id', '>', $this->cidade->uf_id];
         }
-        
         $conditions [] = ['cidades.id' , '<>', 1 ];
 
        $cidades =  DB::table('cidades')
@@ -123,7 +120,6 @@ class CidadesExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
                     'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 ],
             ];
-
                 return [
             
             BeforeSheet::class => function (BeforeSheet $event) use ($styleArray, $styleTitulo){
@@ -144,10 +140,8 @@ class CidadesExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
                 $event->sheet->getStyle($cellRangeHeardes1)->applyFromArray($stylePerguntas);
                 $cellRangeHeardes2 = 'B3'; 
                 $event->sheet->getStyle($cellRangeHeardes2)->applyFromArray($stylePerguntas);
-            
+           
             },
         ];
     }
-
-
 }

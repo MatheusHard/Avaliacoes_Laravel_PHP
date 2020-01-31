@@ -405,7 +405,7 @@ function checkedFalse(){
             console.log(blob.size);
             var link=document.createElement('a');
             link.href=window.URL.createObjectURL(blob);
-            link.download="Avaliacoes_" + new Date(); + ".xlsx";
+            link.download="Avaliacoes_" + dataHora(); + ".xlsx";
             link.click();
           },
           error: function(error){
@@ -419,6 +419,17 @@ function checkedFalse(){
    gerarExcelPostAvaliacoes();
   
 });
+
+
+/*********UTILS**********/
+
+function dataHora(){
+        
+        var d = new Date();
+        var datestring = d.getDate()  + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " " +
+        d.getHours() + ":" + d.getMinutes();
+        return datestring;
+        }
 
 /*********AUTO LOAD**********/
 

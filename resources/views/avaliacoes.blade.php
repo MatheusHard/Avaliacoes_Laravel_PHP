@@ -297,7 +297,7 @@ $.ajaxSetup({
 
     function listarCidades(){
 
-    $.getJSON('/api/cidades', function(data){
+    $.getJSON('/api/cidades/index', function(data){
      
       opcao = '<option select value="'+ 0 +'">'+ "TOTAL" + '</option>';
          $('#id_cidade').append(opcao);

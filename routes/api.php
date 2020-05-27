@@ -33,21 +33,23 @@ Route::post('/ufs/index_api', 'ControllerUf@indexAPIAndroidUfs');
 //Avaliações
 Route::post('/avaliacoes/store_api', 'ControllerAvaliacao@store');
 
-/******************APIS BLADE***********************/
 
-Route::resource('/cidades', 'ControllerCidade');
+/******************APIS FRONTEND***********************/
+
+//Cidade:
+Route::get('/cidades/index', 'ControllerCidade@index');
+Route::get('cidades/show/{id}', 'ControllerCidade@show');  
+Route::post('/cidades/update/{id}', 'ControllerCidade@update');
+
+
+//Uf:
 Route::resource('/ufs', 'ControllerUf');
+
+//Avaliacoes:
 Route::resource('/avaliacoes', 'ControllerAvaliacao');
 
-//Route::post('/excel/avaliacoes', 'ControllerAvaliacao@exportAvaliacoes');
 
-Route::post('/excel/avaliacoes', function (Request $request) {
-    return Excel::download(new AvaliacoesExport($request->id_cidade), 'avaliacoes.xlsx');
+/***********************PAGINATIONS***********************/
 
-});
-
-//Relizado o import pra funcionar:
-//use Illuminate\Support\Facades\Route;
-
-
+Route::get('/cidades/index_pagination', 'ControllerCidade@indexPagination');
 

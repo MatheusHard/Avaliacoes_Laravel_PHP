@@ -22,21 +22,41 @@ class ControllerCidade extends Controller
         $arrayCidades = DB::table('cidades')
             ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
             ->select('cidades.id', 'cidades.descricao_cidade', 'cidades.uf_id', 'ufs.descricao_uf')
-            ->orderBy('cidades.descricao_cidade', 'asc')->get();
+            ->orderBy('cidades.descricao_cidade', 'asc')
+            ->get();
 
+//        $arrayCidades = Cidade::paginate(3);
         return json_encode($arrayCidades);
     
     }
     
     public function indexView()
     {
-               
+ 
         $arrayCidades = DB::table('cidades')
             ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
             ->select('cidades.id', 'cidades.descricao_cidade', 'cidades.uf_id', 'ufs.descricao_uf')
             ->get();
 
         return view('cidades', compact(['arrayCidades']));
+    }
+
+    public function indexPagination()
+    {
+               
+        /*$arrayCidades = DB::table('cidades')
+            ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
+            ->select('cidades.id', 'cidades.descricao_cidade', 'cidades.uf_id', 'ufs.descricao_uf')
+            ->orderBy('cidades.descricao_cidade', 'asc')
+            ->paginate(4);
+         return json_encode($arrayCidades);*/
+
+         return DB::table('cidades')
+            ->join('ufs', 'cidades.uf_id', '=', 'ufs.id')
+            ->select('cidades.id', 'cidades.descricao_cidade', 'cidades.uf_id', 'ufs.descricao_uf')
+            ->orderBy('cidades.descricao_cidade', 'asc')
+            ->paginate(10);
+    
     }
 
 

@@ -39,6 +39,14 @@
           </div>
       </div>
      <div class="modal-footer">
+       
+        <nav id="paginator">
+         <ul class="pagination">
+       <!-- <li class="page-item">
+        <a class="page-link" href="#">S</a></li>-->
+         </ul>
+        </nav>
+     
       <button type="submit" class="btn btn-success">Excel</button>
     </div>
 </div>
@@ -67,8 +75,7 @@
              onkeyup="this.value = this.value.toUpperCase();">
         </div>
     </div>
-
-    
+  
     
     <div class="form-group">
       <label for="estados" class="control-label">Estados</label>
@@ -88,8 +95,6 @@
 
     </div>
   </div>
-
-
 </div>
 
 @endsection
@@ -114,25 +119,22 @@ $.ajaxSetup({
 
     function montarLinha(c) {
 
-      var  linha = "<tr>"+
-        "<td>"+c.id+"</td>"+
-        "<td>"+c.descricao_cidade + "/" + c.descricao_uf+"</td>"+
-        //Funciona correto: 
-       // "<td>"+c.descricao_uf+"</td>"+
-        "<td>"+
-          '<button class="btn btn-xs btn-primary botoes" onclick="editar('+c.id+')">Editar</button>'+
-          '<button class="btn btn-xs btn-danger botoes" onclick="remover('+c.id+')">Apagar</button>'+
-        "</td>"+
-        "</tr>";
-
-        return linha;
+      return '<tr>' +
+            '  <th scope="row">' + c.id + '</th>' +
+            '  <td>' + c.descricao_cidade + "/" + c.descricao_uf + '</td>' +
+            '  <td>' +
+                '<button class="btn btn-xs btn-primary botoes" onclick="editar('+c.id+')">Editar</button>'+
+                '<button class="btn btn-xs btn-danger botoes" onclick="remover('+c.id+')">Apagar</button>'+
+            '  </td>'+
+              '</tr>';        
+        
     }
       
       /**********EDITAR CIDADE*********/
      
        function editar(id){
         
-        $.getJSON('/api/cidades/'+id , function(data){
+        $.getJSON('/api/cidades/show/'+id , function(data){
           console.log(data);
 
           $('#id').val(data.id);
@@ -167,19 +169,18 @@ $.ajaxSetup({
        }
       /******LISTAR CIDADES*********/
       
-       function listarCidades(){
+      /* function listarCidades(){
 
       $.getJSON('/api/cidades' , function(cidades){
 
         for( i = 0; i < cidades.length; i++){
-
           if(cidades[i].id !== 1){
             console.log(cidades[i].id);
             linha = montarLinha(cidades[i])
             $('#tabelaCidades>tbody').append(linha);
       }}
       });
-    }
+    }*/
 
 function listarUfs(){
 
@@ -207,6 +208,52 @@ $.getJSON('/api/ufs' , function(data){
 }}
 });
 }
+/*******************TESTES PAG******************/
+
+function getItem(data, i){
+    if (i == data.current_page)
+        s = '<li class="page-item active">';
+    else
+        s = '<li class="page-item">';
+    s += ' <a class="page-link" href="#">' + i + '</a></li>';
+    return s;
+}
+
+
+function montarPaginator(data){
+  console.log("DAta: "+ data);
+
+  for(i = 1; data.total; i++){
+    s = getItem(data, i);
+    console.log(s);
+
+    $("#paginator>ul").append(s);
+    }
+}
+
+
+function montarTabela(data){
+
+  $("#tabelaCidades>tbody>tr").remove();
+  for(i = 0; i < data.data.length; i++){
+    if(data.data[i].id !== 1){
+    s =  montarLinha(data.data[i]);
+    $("#tabelaCidades>tbody").append(s);
+    }
+  }
+}
+
+function carregarCidades(pagina){
+
+  $.get('/api/cidades/index_pagination', {page: pagina}, function(resp){
+
+  montarTabela(resp);
+  //montarPaginator(resp);
+  console.log("Dados:" + resp.data);
+
+});
+
+}
 
 
 /**********CADASTRAR CIDADE**********/
@@ -217,7 +264,7 @@ c = {
   uf_id: $("#uf_id").val()
 
 };
-$.post('/api/cidades' , c, function(data){
+$.post('/api/cidades/store_api' , c, function(data){
   
   console.log(data);
   city = JSON.parse(data);
@@ -238,8 +285,8 @@ function salvarCidade() {
     uf_id: $("#uf_id").val()
 };
 $.ajax({
-          type: "PUT",
-          url: "/api/cidades/"+ c.id,
+          type: "POST",
+          url: "/api/cidades/update/"+ c.id,
           data: c,
           context: this,
 
@@ -279,12 +326,11 @@ function gerarExcelPostCidades() {
       },
  
       success: function (blob) {
-
         
             console.log(blob.size);
             var link=document.createElement('a');
             link.href=window.URL.createObjectURL(blob);
-            link.download="Cidades_" + dataHora(); + ".xlsx";
+            link.download="Cidades_" + dataHora() + ".xlsx";
             link.click();
           },
       error: function(error){
@@ -326,7 +372,8 @@ function dataHora(){
     $(function () {
       listarUfs();
       listarUfsExcel();
-      listarCidades();
+      //listarCidades();
+      carregarCidades(1);
       })
     </script>
 @endsection

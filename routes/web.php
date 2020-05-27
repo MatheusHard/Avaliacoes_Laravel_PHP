@@ -22,7 +22,7 @@ Route::get('/cidades/novo', 'ControllerCidade@create');
 Route::post('/cidades', 'ControllerCidade@store');
 Route::get('cidades/apagar/{id}', 'ControllerCidade@destroy');   
 Route::get('cidades/editar/{id}', 'ControllerCidade@edit');  
-Route::post('/cidades/{id}', 'ControllerCidade@update');
+
 
 
 Route::get('avaliacoes', 'ControllerAvaliacao@indexView');
